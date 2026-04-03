@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SharedFooter from './SharedFooter';
 
 // The complete merged catalog with numeric prices for cart math
 const componentsData = [
@@ -366,7 +367,7 @@ function App() {
         <div style={{ flex: 1, minWidth: '320px', background: '#a2abbb', padding: '20px', borderRadius: '10px', height: 'fit-content', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', position: 'sticky', top: '20px' }}>
           <h2 style={{ marginTop: 0, borderBottom: '2px solid #e0e5f8', paddingBottom: '10px' }}>Your Order</h2>
           {cart.length === 0 ? (
-            <p style={{ color: '#b2bec3' }}>No items selected yet.</p>
+            <p style={{ color: '#040505' }}>No items selected yet.</p>
           ) : (
             <>
               <div style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '5px' }}>
@@ -457,7 +458,9 @@ function App() {
           Send Gadget Inquiry via WhatsApp
         </button>
       </div>
+      <SharedFooter />
     </div>
+  
   );
 }
 
