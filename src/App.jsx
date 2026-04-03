@@ -197,271 +197,535 @@ const componentsData = [
   { id: 174, name: "Raspberry Pi 4 B", details: "1GB: $75 / 2GB: $90 / 4GB: $105", price: 75.00, category: "Raspberry Pi Boards", img: "./assets/id174.png" },
   { id: 175, name: "Raspberry Pi 5", details: "4GB: $115 / 8GB: $135", price: 115.00, category: "Raspberry Pi Boards", img: "./assets/id175.png" },
   { id: 176, name: "Raspberry Pi Compute Module 4", details: "No Wireless: $65 / Wireless: $80", price: 65.00, category: "Raspberry Pi Boards", img: "./assets/id176.png" }
+  
+]
+// Contacts for component orders (rotate among these)
+
+const componentContacts = [
+
+  { name: "SPARK SYSTEMS", number: "263787374675" },
+
+  { name: "ELECTRIFAI", number: "263776868774" },
+
+  { name: "RC Forge", number: "263780114134" }
+
 ];
 
-// Contacts for component orders (rotate among these)
-const componentContacts = [
-  { name: "SPARK SYSTEMS", number: "263787374675" },
-  { name: "ELECTRIFAI", number: "263776868774" },
-  { name: "RC Forge", number: "263780114134" }
-];
+
 
 // Contacts for gadget orders (rotate between these two)
+
 const gadgetContacts = [
+
   { name: "RC Forge", number: "263780114134" },
+
   { name: "OM", number: "263784882920" }
+
 ];
 
+
+
 function App() {
+
   // Component order states
+
   const [cart, setCart] = useState([]);
+
   const [orderNotes, setOrderNotes] = useState('');
+
   const [componentContactIndex, setComponentContactIndex] = useState(() => {
+
     const saved = localStorage.getItem('componentContactIndex');
+
     return saved !== null ? parseInt(saved, 10) : 0;
+
   });
+
+
 
   // Gadget order states
+
   const [gadgetDescription, setGadgetDescription] = useState('');
+
   const [gadgetContactIndex, setGadgetContactIndex] = useState(() => {
+
     const saved = localStorage.getItem('gadgetContactIndex');
+
     return saved !== null ? parseInt(saved, 10) : 0;
+
   });
 
+
+
   // Component cart functions
+
   const addToCart = (product) => {
+
     setCart((prevCart) => {
+
       const existingItem = prevCart.find(item => item.id === product.id);
+
       if (existingItem) {
+
         return prevCart.map(item =>
+
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+
         );
+
       }
+
       return [...prevCart, { ...product, quantity: 1 }];
+
     });
+
   };
+
+
 
   const removeFromCart = (productId) => {
+
     setCart((prevCart) => prevCart.filter(item => item.id !== productId));
+
   };
+
+
 
   const calculateTotal = () => {
+
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+
   };
 
+
+
   // Send component order
+
   const sendComponentOrder = () => {
+
     const currentContact = componentContacts[componentContactIndex];
+
     const phoneNumber = currentContact.number;
+
+
 
     let message = " *New Component Order from RC Forge Platform* \n\n“I would like to place an order for the following items:\n\n";
 
+
+
     cart.forEach(item => {
+
       message += `• *${item.name}* x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
+
     });
+
+
 
     message += `\n *Total Amount:* $${calculateTotal()}`;
 
+
+
     if (orderNotes.trim() !== "") {
+
       message += `\n\n *Notes and Instructions:* \n${orderNotes.trim()}`;
+
     }
+
+
 
     message += `\n\n *Order sent to:* ${currentContact.name}`;
 
+
+
     const encodedMessage = encodeURIComponent(message);
+
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+
 
     window.open(whatsappUrl, '_blank');
 
+
+
     // Rotate to next contact and save to localStorage
+
     const nextIndex = (componentContactIndex + 1) % componentContacts.length;
+
     setComponentContactIndex(nextIndex);
+
     localStorage.setItem('componentContactIndex', nextIndex);
+
   };
+
+
 
   // Send gadget order
+
   const sendGadgetOrder = () => {
+
     if (gadgetDescription.trim() === "") {
+
       alert("Please describe the gadget you need (laptop, phone, battery, etc.)");
+
       return;
+
     }
 
+
+
     const currentContact = gadgetContacts[gadgetContactIndex];
+
     const phoneNumber = currentContact.number;
 
+
+
     let message = " *New Gadget Order from RC Forge Platform* \n\n“I would like to order the following gadget(s):\n\n";
+
     message += `${gadgetDescription.trim()}\n\n`;
+
     message += ` *Order sent to:* ${currentContact.name}`;
 
+
+
     const encodedMessage = encodeURIComponent(message);
+
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+
 
     window.open(whatsappUrl, '_blank');
 
+
+
     // Rotate to next contact and save to localStorage
+
     const nextIndex = (gadgetContactIndex + 1) % gadgetContacts.length;
+
     setGadgetContactIndex(nextIndex);
+
     localStorage.setItem('gadgetContactIndex', nextIndex);
+
   };
 
+
+
   return (
+
     <div style={{ fontFamily: '"Inter", sans-serif', background: '#f5f6fa', minHeight: '100vh', padding: '20px' }}>
+
       {/* Header */}
+
       <header style={{
+
         display: 'flex',
+
         alignItems: 'center',
+
         justifyContent: 'center',
+
         gap: '20px',
+
         marginBottom: '40px',
+
         padding: '20px',
+
         background: '#4d9db3',
+
         color: '#fff',
+
         borderRadius: '10px'
+
       }}>
+
         <img
+
           src="RCForgelogo.png"
+
           alt="RC Forge Logo"
+
           style={{ height: '60px', width: 'auto', borderRadius: '5px' }}
+
           onError={(e) => { e.target.style.display = 'none'; }}
+
         />
+
         <div style={{ textAlign: 'left' }}>
+
           <h1 style={{ margin: 0, letterSpacing: '2px' }}>RC FORGE</h1>
+
           <p style={{ margin: '5px 0 0', color: '#00cec9' }}>Precision Electronic Components</p>
+
         </div>
+
       </header>
 
+
+
       <main style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '20px', flexDirection: 'row', flexWrap: 'wrap' }}>
+
         {/* Products Grid */}
+
         <div style={{ flex: 3, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px' }}>
+
           {componentsData.map(product => (
+
             <div key={product.id} style={{ background: '#fff', borderRadius: '10px', padding: '15px', textAlign: 'center', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+
               <div>
+
                 <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#636e72', background: '#44c4fc', padding: '3px 8px', borderRadius: '12px', display: 'inline-block', marginBottom: '10px' }}>
+
                   {product.category}
+
                 </div>
+
                 <div style={{ height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'hsl(189, 92%, 47%)', borderRadius: '8px', overflow: 'hidden' }}>
+
                   <img src={product.img} alt={product.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+
                     onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.innerText = ' Image Ready'; }} />
+
                 </div>
+
                 <h3 style={{ fontSize: '1rem', margin: '15px 0 5px', color: '#2d3436' }}>{product.name}</h3>
+
                 {product.details && (
+
                   <p style={{ fontSize: '0.8rem', color: '#b2bec3', margin: '0 0 10px', minHeight: '35px' }}>{product.details}</p>
+
                 )}
+
               </div>
+
               <div>
+
                 <p style={{ fontWeight: 'bold', color: '#0984e3', margin: '10px 0 15px', fontSize: '1.2rem' }}>${product.price.toFixed(2)}</p>
+
                 <button
+
                   onClick={() => addToCart(product)}
+
                   style={{ width: '100%', padding: '10px', background: '#2d3436', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold', transition: 'background 0.2s' }}
+
                   onMouseOver={(e) => e.target.style.background = '#0984e3'}
+
                   onMouseOut={(e) => e.target.style.background = '#2d3436'}
+
                 >
+
                   Add to Order
+
                 </button>
+
               </div>
+
             </div>
+
           ))}
+
         </div>
+
+
 
         {/* Sidebar Cart */}
-        <div style={{ flex: 1, minWidth: '320px', background: '#a2abbb', padding: '20px', borderRadius: '10px', height: 'fit-content', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', position: 'sticky', top: '20px' }}>
+
+        <div style={{ flex: 1, minWidth: '320px', background: '#f7f8fa', padding: '20px', borderRadius: '10px', height: 'fit-content', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', position: 'sticky', top: '20px' }}>
+
           <h2 style={{ marginTop: 0, borderBottom: '2px solid #e0e5f8', paddingBottom: '10px' }}>Your Order</h2>
+
           {cart.length === 0 ? (
-            <p style={{ color: '#040505' }}>No items selected yet.</p>
+
+            <p style={{ color: '#040607' }}>No items selected yet.</p>
+
           ) : (
+
             <>
+
               <div style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '5px' }}>
+
                 {cart.map(item => (
-                  <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', fontSize: '0.9rem', borderBottom: '1px solid #f5f6fa', paddingBottom: '5px' }}>
-                    <span style={{ flex: 2, paddingRight: '10px' }}>{item.name} <br /><small style={{ color: '#b2bec3' }}>x{item.quantity}</small></span>
+
+                  <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', fontSize: '0.9rem', borderBottom: '1px solid #09090a', paddingBottom: '5px' }}>
+
+                    <span style={{ flex: 2, paddingRight: '10px' }}>{item.name} <br /><small style={{ color: '#18b6fa' }}>x{item.quantity}</small></span>
+
                     <span style={{ fontWeight: 'bold', flex: 1, textAlign: 'right', marginRight: '10px' }}>${(item.price * item.quantity).toFixed(2)}</span>
+
                     <button
+
                       onClick={() => removeFromCart(item.id)}
+
                       style={{ background: '#ff7675', color: '#fff', border: 'none', borderRadius: '50%', width: '22px', height: '22px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 'bold' }}
+
                       title="Remove from cart"
+
                     >
+
                       ✕
+
                     </button>
+
                   </div>
+
                 ))}
+
               </div>
+
+
 
               {/* Order Notes Textarea */}
+
               <div style={{ marginTop: '15px' }}>
+
                 <label style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#2d3436', display: 'block', marginBottom: '5px' }}>Order Notes:</label>
+
                 <textarea
+
                   value={orderNotes}
+
                   onChange={(e) => setOrderNotes(e.target.value)}
+
                   placeholder="Write specific instructions here: IMPORTANT (university name/location), OPTIONAL (e.g., resistor values, etc)..."
+
                   style={{
+
                     width: '100%',
+
                     minHeight: '80px',
+
                     borderRadius: '5px',
+
                     border: '1px solid #dfe6e9',
+
                     padding: '10px',
+
                     fontFamily: 'inherit',
+
                     fontSize: '0.9rem',
+
                     boxSizing: 'border-box',
+
                     resize: 'vertical'
+
                   }}
+
                 />
+
               </div>
+
+
 
               <div style={{ borderTop: '2px solid #f5f6fa', marginTop: '15px', paddingTop: '15px', display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '1.2rem' }}>
+
                 <span>Total:</span>
+
                 <span style={{ color: '#0984e3' }}>${calculateTotal()}</span>
+
               </div>
+
               <button
+
                 onClick={sendComponentOrder}
+
                 style={{ width: '100%', marginTop: '20px', padding: '15px', background: '#00b894', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1rem', transition: 'background 0.2s' }}
+
                 onMouseOver={(e) => e.target.style.background = '#00a885'}
+
                 onMouseOut={(e) => e.target.style.background = '#00b894'}
+
               >
+
                 Book via WhatsApp
+
               </button>
+
             </>
+
           )}
+
         </div>
+
       </main>
 
+
+
       {/* Gadget Order Section */}
+
       <div style={{ maxWidth: '1400px', margin: '40px auto 0', background: '#fff', borderRadius: '10px', padding: '20px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+
         <h2 style={{ margin: '0 0 10px', color: '#2d3436', borderBottom: '2px solid #44c4fc', display: 'inline-block', paddingBottom: '5px' }}>
+
           Gadget Orders (Laptops, Phones, Batteries, Phone Parts)
+
         </h2>
+
         <p style={{ color: '#636e72', marginBottom: '20px' }}>
+
           Describe the gadget(s) you need. Orders will be rotated between RC Forge and OM.
+
         </p>
+
         <textarea
+
           value={gadgetDescription}
+
           onChange={(e) => setGadgetDescription(e.target.value)}
+
           placeholder="Example: iPhone 12 Pro Max 256GB (Gold) – New, or Laptop battery for Dell XPS 15 – 6-cell"
+
           style={{
+
             width: '100%',
+
             minHeight: '120px',
+
             borderRadius: '5px',
+
             border: '1px solid #dfe6e9',
+
             padding: '10px',
+
             fontFamily: 'inherit',
+
             fontSize: '1rem',
+
             boxSizing: 'border-box',
+
             resize: 'vertical',
+
             marginBottom: '20px'
+
           }}
+
         />
+
         <button
+
           onClick={sendGadgetOrder}
+
           style={{ padding: '12px 24px', background: '#0984e3', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem', transition: 'background 0.2s' }}
+
           onMouseOver={(e) => e.target.style.background = '#0652dd'}
+
           onMouseOut={(e) => e.target.style.background = '#0984e3'}
+
         >
+
           Send Gadget Inquiry via WhatsApp
+
         </button>
+
       </div>
       <SharedFooter />
+
     </div>
-  
+
+
+
   );
+
 }
+
+
 
 export default App;
