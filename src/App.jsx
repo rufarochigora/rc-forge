@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SharedFooter from './SharedFooter';
+import WebsiteAdBanner from './assets/WebsiteAdBanner';
 
 // The complete merged catalog with numeric prices for cart math
 const componentsData = [
@@ -459,7 +460,7 @@ function App() {
 
       </header>
 
-
+      <WebsiteAdBanner />
 
       <main style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '20px', flexDirection: 'row', flexWrap: 'wrap' }}>
 
