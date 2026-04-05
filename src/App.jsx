@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SharedFooter from './SharedFooter';
 import WebsiteAdBanner from './assets/WebsiteAdBanner';
 import SocialBar from './assets/SocialBar';
+import AboutSection from './assets/AboutSection';
 // The complete merged catalog with numeric prices for cart math
 const componentsData = [
   // --- Micro-controllers & Boards ---
@@ -518,7 +519,7 @@ function App() {
       </header>
 
       <WebsiteAdBanner />
-
+      <AboutSection />
       <main style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '20px', flexDirection: 'row', flexWrap: 'wrap' }}>
 
         {/* Products Grid */}
