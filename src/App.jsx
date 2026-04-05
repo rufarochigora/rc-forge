@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SharedFooter from './SharedFooter';
 import WebsiteAdBanner from './assets/WebsiteAdBanner';
-
+import SocialBar from './assets/SocialBar';
 // The complete merged catalog with numeric prices for cart math
 const componentsData = [
   // --- Micro-controllers & Boards ---
@@ -32,9 +32,9 @@ const componentsData = [
   { id: 23, name: "Ethernet Shield W5500", details: "", price: 9.00, category: "Wireless & Communication", img: "./assets/id23.png" },
   { id: 24, name: "Bluetooth Module (HC-05)", details: "", price: 6.00, category: "Wireless & Communication", img: "./assets/id24.png" },
   { id: 25, name: "GPS Sensor (NEO-6M)", details: "", price: 10.00, category: "Wireless & Communication", img: "./assets/id25.png" },
-  { id: 26, name: "GSM Module SIM800L", details: "", price: 5.00, category: "Wireless & Communication", img: "./assets/id26.png" },
-  { id: 27, name: "GSM Module SIM800L V2.0", details: "", price: 8.00, category: "Wireless & Communication", img: "./assets/id27.png" },
-  { id: 28, name: "GSM Module SIM900 V4.0", details: "", price: 14.00, category: "Wireless & Communication", img: "./assets/id28.png" },
+  { id: 26, name: "GSM & GPRS Module SIM800L", details: "", price: 10.00, category: "Wireless & Communication", img: "./assets/id26.png" },
+  { id: 27, name: "GSM & GPRS Module SIM800L V2.0", details: "", price: 12.00, category: "Wireless & Communication", img: "./assets/id27.png" },
+  { id: 28, name: "GSM & GPRS Module SIM900 V4.0", details: "", price: 14.00, category: "Wireless & Communication", img: "./assets/id28.png" },
   { id: 29, name: "GPS Sensor SIM808", details: "", price: 20.00, category: "Wireless & Communication", img: "./assets/id29.png" },
 
   // --- Sensors & Input Devices ---
@@ -197,8 +197,65 @@ const componentsData = [
   { id: 173, name: "Raspberry Pi 3 B+", details: "1GB RAM, 64 Bit CPU", price: 80.00, category: "Raspberry Pi Boards", img: "./assets/id173.png" },
   { id: 174, name: "Raspberry Pi 4 B", details: "1GB: $75 / 2GB: $90 / 4GB: $105", price: 75.00, category: "Raspberry Pi Boards", img: "./assets/id174.png" },
   { id: 175, name: "Raspberry Pi 5", details: "4GB: $115 / 8GB: $135", price: 115.00, category: "Raspberry Pi Boards", img: "./assets/id175.png" },
-  { id: 176, name: "Raspberry Pi Compute Module 4", details: "No Wireless: $65 / Wireless: $80", price: 65.00, category: "Raspberry Pi Boards", img: "./assets/id176.png" }
-  
+  { id: 176, name: "Raspberry Pi Compute Module 4", details: "No Wireless: $65 / Wireless: $80", price: 65.00, category: "Raspberry Pi Boards", img: "./assets/id176.png" },
+  // --- Microcontrollers ---
+  { id: 177, name: "ESP32-S3-WROOM-1", details: "Dual-core 240MHz | Wi-Fi + BLE | 16MB Flash | 8MB PSRAM | Native USB", price: 15.00, category: "Microcontrollers", img: "" },
+
+  // --- Communication Modules ---
+  { id: 178, name: "Quectel BG95-M3", details: "LTE-M / NB-IoT / 2G fallback + GNSS", price: 19.85, category: "Communication Modules", img: "" },
+
+  // --- Security ICs ---
+  { id: 179, name: "ATECC608A", details: "Secure crypto element for hardware authentication", price: 25.00, category: "Security ICs", img: "" },
+
+  // --- Power Management ---
+  { id: 180, name: "TPS3430", details: "External watchdog timer IC", price: 5.00, category: "Power Management", img: "" },
+  { id: 181, name: "MP1584EN Buck Converter", details: "4.5–28V input | 5V/3.3V output | 3A", price: 4.00, category: "Power Management", img: "" },
+  { id: 182, name: "TLV1117-3.3 Regulator", details: "Low-noise 3.3V linear voltage regulator", price: 5.00, category: "Power Management", img: "" },
+  { id: 183, name: "BQ24074 Solar Charger IC", details: "Solar-safe Li-ion charger IC | Included in bundle", price: 0.00, category: "Power Management", img: "" },
+
+  // --- Connectors ---
+  { id: 184, name: "USB-C Connector", details: "Native ESP32-S3 USB interface connector", price: 2.00, category: "Connectors", img: "" },
+
+  // --- Power & Batteries ---
+  { id: 185, name: "18650 Li-ion Battery + Charger", details: "2600 mAh | Includes USB charger", price: 7.00, category: "Power & Batteries", img: "" },
+  { id: 186, name: "Supercapacitor 5.5V 1F", details: "5.5V | 1F | Backup energy storage", price: 3.00, category: "Power & Batteries", img: "" },
+
+  // --- Protection Components ---
+  { id: 187, name: "PTC Resettable Fuse", details: "2–3A protection | Set of 10", price: 4.00, category: "Protection Components", img: "" },
+  { id: 188, name: "TVS Diode SMBJ58A", details: "Solar surge protection diode | Included in bundle", price: 0.00, category: "Protection Components", img: "" },
+
+  // --- Sensors & Monitors ---
+  { id: 189, name: "INA226", details: "High-side voltage/current monitor | I²C interface", price: 5.00, category: "Sensors & Monitors", img: "" },
+  { id: 190, name: "Precision Shunt Resistor", details: "0.001–0.005Ω | 1–3W | 1% tolerance | $1.50 each", price: 1.50, category: "Sensors & Monitors", img: "" },
+  { id: 191, name: "DS18B20 Temperature Sensor", details: "Waterproof digital temperature sensor | Included in bundle", price: 0.00, category: "Sensors & Monitors", img: "" },
+  { id: 192, name: "LDR / Photodiode Set", details: "Case-open detection | Sold as a set", price: 3.00, category: "Sensors & Monitors", img: "" },
+  { id: 193, name: "Reed Switch", details: "Enclosure tamper detection switch", price: 2.00, category: "Sensors & Monitors", img: "" },
+  { id: 194, name: "SW-420 / SW-520D Vibration Sensor", details: "Shock / vibration detection sensor", price: 5.00, category: "Sensors & Monitors", img: "" },
+
+  // --- Power Switching ---
+  { id: 195, name: "DC MOSFET Module", details: "12–60V | ≥100A load control", price: 6.00, category: "Power Switching", img: "" },
+
+  // --- Driver ICs ---
+  { id: 196, name: "IR2101 MOSFET Gate Driver", details: "Half-bridge MOSFET/IGBT gate driver", price: 7.50, category: "Driver ICs", img: "" },
+
+  // --- LEDs & Display ---
+  { id: 197, name: "SMD LEDs  bulk 250-piece set", details: "Red / Green / Blue / Yellow / White | 250-piece set", price: 6.00, category: "LEDs & Display", img: "" },
+  { id: 198, name: "WS2812B LED Ring", details: "12-LED addressable RGB ring | Optional add-on", price: 6.00, category: "LEDs & Display", img: "" },
+
+  // --- Enclosures & Hardware ---
+  { id: 199, name: "IP65 ABS Enclosure 100 × 65 × 55 mm", details: "100 × 65 × 55 mm | Weatherproof casing", price: 6.00, category: "Enclosures & Hardware", img: "" },
+  { id: 200, name: "Cable Glands PG7/PG9", details: "Waterproof cable gland set", price: 6.00, category: "Enclosures & Hardware", img: "" },
+
+  // --- PCB & Fabrication ---
+  { id: 201, name: "FR-4 PCB", details: "2-layer | 50 × 70 mm | Pack of 3", price: 4.00, category: "PCB & Fabrication", img: "" },
+
+  // --- Passive Components ---
+  { id: 202, name: "R/C/L Passive Kit", details: "0402 / 0603 resistors, capacitors, inductors set", price: 6.00, category: "Passive Components", img: "" },
+
+  // --- Tools & Consumables ---
+  { id: 203, name: "Conformal Coating Spray", details: "Moisture & corrosion protection for PCBs", price: 4.00, category: "Tools & Consumables", img: "" },
+
+ 
 ]
 // Contacts for component orders (rotate among these)
 
@@ -413,7 +470,7 @@ function App() {
   return (
 
     <div style={{ fontFamily: '"Inter", sans-serif', background: '#f5f6fa', minHeight: '100vh', padding: '20px' }}>
-
+      <SocialBar /> 
       {/* Header */}
 
       <header style={{

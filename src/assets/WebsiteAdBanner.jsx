@@ -16,6 +16,13 @@ export default function WebsiteAdBanner() {
         window.open(`https://wa.me/${RC_FORGE_NUMBER}?text=${message}`, '_blank');
     };
 
+    const handleEmail = () => {
+        window.open(
+            'mailto:rcforge.admin@gmail.com?subject=Website%20Development%20Inquiry&body=Hello%20RC%20Forge%2C%0A%0AI%20am%20interested%20in%20getting%20a%20professional%20website%20built%20for%20my%20company%2Finstitution.%0A%0APlease%20get%20in%20touch%20with%20me.',
+            '_self'
+        );
+    };
+
     return (
         <div style={styles.wrapper}>
             {/* Top bar - always visible */}
@@ -32,6 +39,9 @@ export default function WebsiteAdBanner() {
                     </button>
                     <button style={styles.whatsappBtn} onClick={handleWhatsApp}>
                         💬 WhatsApp
+                    </button>
+                    <button style={styles.emailBtn} onClick={handleEmail}>
+                        ✉ Email
                     </button>
                     <button style={styles.toggleBtn} onClick={() => setExpanded(!expanded)}>
                         {expanded ? 'Show Less ▲' : 'Learn More ▼'}
@@ -80,12 +90,18 @@ export default function WebsiteAdBanner() {
                             <p style={styles.contactLine}>
                                 📞 <strong>RC Forge:</strong> +263 780 114 134
                             </p>
+                            <p style={styles.contactLine}>
+                                ✉ <strong>Email:</strong> rcforge.admin@gmail.com
+                            </p>
                             <div style={styles.ctaBtnGroup}>
                                 <button style={styles.ctaCallBtn} onClick={handleCall}>
                                     📞 Call Now
                                 </button>
                                 <button style={styles.ctaWhatsappBtn} onClick={handleWhatsApp}>
-                                    💬 WhatsApp Us
+                                    💬 WhatsApp
+                                </button>
+                                <button style={styles.ctaEmailBtn} onClick={handleEmail}>
+                                    ✉ Email Us
                                 </button>
                             </div>
                         </div>
@@ -158,6 +174,16 @@ const styles = {
         fontWeight: 'bold',
         fontSize: '13px',
     },
+    emailBtn: {
+        backgroundColor: '#4d9db3',
+        color: '#ffffff',
+        border: 'none',
+        padding: '7px 16px',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+        fontSize: '13px',
+    },
     toggleBtn: {
         backgroundColor: 'transparent',
         color: '#eec643',
@@ -216,12 +242,13 @@ const styles = {
     contactLine: {
         color: '#0b2545',
         fontSize: '14px',
-        margin: '0 0 16px 0',
+        margin: '0 0 8px 0',
     },
     ctaBtnGroup: {
         display: 'flex',
         gap: '10px',
         flexWrap: 'wrap',
+        marginTop: '8px',
     },
     ctaCallBtn: {
         flex: 1,
@@ -238,6 +265,17 @@ const styles = {
         flex: 1,
         padding: '10px',
         backgroundColor: '#25D366',
+        color: '#ffffff',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+        fontSize: '14px',
+    },
+    ctaEmailBtn: {
+        flex: 1,
+        padding: '10px',
+        backgroundColor: '#4d9db3',
         color: '#ffffff',
         border: 'none',
         borderRadius: '5px',
