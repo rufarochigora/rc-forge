@@ -300,6 +300,11 @@ function App() {
 
   });
 
+  const [customerName, setCustomerName] = useState('');
+  const [customerWhatsApp, setCustomerWhatsApp] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderConfirmation, setOrderConfirmation] = useState(null);
+
 
 
   // Gadget order states
@@ -360,62 +365,104 @@ function App() {
 
   // Send component order
 
-  const sendComponentOrder = () => {
-
-    const currentContact = componentContacts[componentContactIndex];
-
-    const phoneNumber = currentContact.number;
-
-
-
-    let message = " *New Component Order from RC Forge Platform* \n\n“I would like to place an order for the following items:\n\n";
-
-
-
-    cart.forEach(item => {
-
-      message += `• *${item.name}* x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
-
-    });
-
-
-
-    message += `\n *Total Amount:* $${calculateTotal()}`;
-
-
-
-    if (orderNotes.trim() !== "") {
-
-      message += `\n\n *Notes and Instructions:* \n${orderNotes.trim()}`;
-
+  const sendComponentOrder = async () => {
+    if (customerName.trim() === '') {
+      alert('Please enter your name before booking.');
+      return;
+    }
+    if (customerWhatsApp.trim() === '') {
+      alert('Please enter your WhatsApp number before booking.');
+      return;
     }
 
+    setIsSubmitting(true);
 
+    // Build components summary string
+    const componentsList = cart.map(item =>
+      `${item.name} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})`
+    ).join(', ');
 
-    message += `\n\n *Order sent to:* ${currentContact.name}`;
+    const orderData = {
+      customerName: customerName.trim(),
+      whatsapp: customerWhatsApp.trim(),
+      components: componentsList,
+      totalPrice: parseFloat(calculateTotal())
+    };
 
+    try {
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycbyaqlgUCANPnAEEpVquE26bguxkmuRBHeI7dbFikdc7hVwmFp3s-CkxBit2dR0-Lp0a6w/exec',
+        {
+          method: 'POST',
+          body: JSON.stringify(orderData),
+          redirect: 'follow'
+        }
+      );
 
+      const result = await response.json();
 
-    const encodedMessage = encodeURIComponent(message);
+      if (result.success) {
+        const currentContact = componentContacts[componentContactIndex];
 
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        // Save confirmation for modal
+        setOrderConfirmation({
+          orderId: result.orderId,
+          contact: currentContact,
+          componentsList,
+          total: calculateTotal()
+        });
 
+        // Rotate contact index
+        const nextIndex = (componentContactIndex + 1) % componentContacts.length;
+        setComponentContactIndex(nextIndex);
+        localStorage.setItem('componentContactIndex', nextIndex);
 
+      } else {
+        alert('Something went wrong registering your order. Please try again.');
+        console.error(result.error);
+      }
 
-    window.open(whatsappUrl, '_blank');
-
-
-
-    // Rotate to next contact and save to localStorage
-
-    const nextIndex = (componentContactIndex + 1) % componentContacts.length;
-
-    setComponentContactIndex(nextIndex);
-
-    localStorage.setItem('componentContactIndex', nextIndex);
-
+    } catch (err) {
+      alert('Connection error. Please check your internet and try again.');
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
+  const confirmAndOpenWhatsApp = () => {
+    if (!orderConfirmation) return;
+
+    const { orderId, contact,  total } = orderConfirmation;
+
+    let message = ` *New Component Order from RC Forge Platform*\n\n`;
+    message += ` *Order ID:* ${orderId}\n`;
+    message += ` *Name:* ${customerName}\n`;
+    message += ` *WhatsApp:* ${customerWhatsApp}\n\n`;
+    message += `I would like to place an order for the following items:\n\n`;
+
+    cart.forEach(item => {
+      message += `• *${item.name}* x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
+    });
+
+    message += `\n *Total Amount:* $${total}`;
+
+    if (orderNotes.trim() !== '') {
+      message += `\n\n *Notes:* ${orderNotes.trim()}`;
+    }
+
+    message += `\n\n*Order sent to:* ${contact.name}`;
+
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/${contact.number}?text=${encodedMessage}`, '_blank');
+
+    // Reset everything
+    setCart([]);
+    setOrderNotes('');
+    setCustomerName('');
+    setCustomerWhatsApp('');
+    setOrderConfirmation(null);
+  };
 
 
   // Send gadget order
@@ -630,8 +677,39 @@ function App() {
 
               </div>
 
+                {/* Customer Details */}
+                <div style={{ marginTop: '15px' }}>
+                  <label style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#2d3436', display: 'block', marginBottom: '5px' }}>
+                    Your Name:
+                  </label>
+                  <input
+                    type="text"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    placeholder="Enter your full name"
+                    style={{
+                      width: '100%', padding: '8px 10px', borderRadius: '5px',
+                      border: '1px solid #dfe6e9', fontSize: '0.9rem',
+                      boxSizing: 'border-box', marginBottom: '10px'
+                    }}
+                  />
+                  <label style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#2d3436', display: 'block', marginBottom: '5px' }}>
+                    Your WhatsApp Number:
+                  </label>
+                  <input
+                    type="tel"
+                    value={customerWhatsApp}
+                    onChange={(e) => setCustomerWhatsApp(e.target.value)}
+                    placeholder="e.g. 263780114134"
+                    style={{
+                      width: '100%', padding: '8px 10px', borderRadius: '5px',
+                      border: '1px solid #dfe6e9', fontSize: '0.9rem',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                </div>
 
-
+                
               {/* Order Notes Textarea */}
 
               <div style={{ marginTop: '15px' }}>
@@ -682,21 +760,19 @@ function App() {
 
               </div>
 
-              <button
-
-                onClick={sendComponentOrder}
-
-                style={{ width: '100%', marginTop: '20px', padding: '15px', background: '#00b894', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1rem', transition: 'background 0.2s' }}
-
-                onMouseOver={(e) => e.target.style.background = '#00a885'}
-
-                onMouseOut={(e) => e.target.style.background = '#00b894'}
-
-              >
-
-                Book via WhatsApp
-
-              </button>
+                <button
+                  onClick={sendComponentOrder}
+                  disabled={isSubmitting}
+                  style={{
+                    width: '100%', marginTop: '20px', padding: '15px',
+                    background: isSubmitting ? '#b2bec3' : '#00b894',
+                    color: '#fff', border: 'none', borderRadius: '5px',
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                    fontWeight: 'bold', fontSize: '1.1rem', transition: 'background 0.2s'
+                  }}
+                >
+                  {isSubmitting ? 'Registering Order...' : 'Book via WhatsApp'}
+                </button>
 
             </>
 
@@ -775,6 +851,62 @@ function App() {
         </button>
 
       </div>
+
+      {/* Order Confirmation Modal */}
+      {orderConfirmation && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+          background: 'rgba(0,0,0,0.6)', zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
+          boxSizing: 'border-box'
+        }}>
+          <div style={{
+            background: '#fff', borderRadius: '12px', padding: '30px',
+            maxWidth: '480px', width: '100%', textAlign: 'center',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.3)'
+          }}>
+            <div style={{ fontSize: '3rem', marginBottom: '10px' }}>✅</div>
+            <h2 style={{ color: '#00b894', margin: '0 0 10px' }}>Order Registered!</h2>
+            <p style={{ color: '#636e72', marginBottom: '20px' }}>
+              Your order has been logged in our system. Save your Order ID to track your order over WhatsApp.
+            </p>
+            <div style={{
+              background: '#f0f9f6', border: '2px dashed #00b894',
+              borderRadius: '8px', padding: '15px', marginBottom: '20px'
+            }}>
+              <p style={{ margin: 0, fontSize: '0.85rem', color: '#636e72' }}>Your Order ID</p>
+              <p style={{ margin: '5px 0 0', fontSize: '1.6rem', fontWeight: 'bold', color: '#2d3436', letterSpacing: '2px' }}>
+                {orderConfirmation.orderId}
+              </p>
+            </div>
+            <p style={{ fontSize: '0.85rem', color: '#636e72', marginBottom: '25px' }}>
+              📌 <strong>Keep this ID.</strong> Quote it on WhatsApp so the team can find your order instantly.
+            </p>
+            <button
+              onClick={confirmAndOpenWhatsApp}
+              style={{
+                width: '100%', padding: '14px', background: '#25D366',
+                color: '#fff', border: 'none', borderRadius: '8px',
+                cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1rem',
+                marginBottom: '10px'
+              }}
+            >
+              💬 Open WhatsApp to Confirm Order
+            </button>
+            <button
+              onClick={() => setOrderConfirmation(null)}
+              style={{
+                width: '100%', padding: '10px', background: 'transparent',
+                color: '#b2bec3', border: '1px solid #dfe6e9', borderRadius: '8px',
+                cursor: 'pointer', fontSize: '0.9rem'
+              }}
+            >
+              Go Back
+            </button>
+          </div>
+        </div>
+      )}
+
       <SharedFooter />
 
     </div>
