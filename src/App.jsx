@@ -377,14 +377,15 @@ function App() {
     setIsSubmitting(true);
 
     // Build components summary string
-    const componentsList = cart.map(item =>
-      `${item.name} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})`
-    ).join(', ');
-
+    
     const orderData = {
       customerName: customerName.trim(),
       whatsapp: customerWhatsApp.trim(),
-      components: componentsList,
+      items: cart.map(item => ({
+        name: item.name,
+        quantity: item.quantity,
+        unitPrice: item.price
+      })),
       totalPrice: parseFloat(calculateTotal())
     };
 
