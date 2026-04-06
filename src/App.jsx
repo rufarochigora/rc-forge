@@ -196,9 +196,9 @@ const componentsData = [
   { id: 171, name: "Raspberry Pi 3 Model A+", details: "512MB LPDDR2 SDRAM", price: 60.00, category: "Raspberry Pi Boards", img: "./assets/id171.png" },
   { id: 172, name: "Raspberry Pi 3 B", details: "1GB RAM, 64 Bit CPU", price: 80.00, category: "Raspberry Pi Boards", img: "./assets/id172.png" },
   { id: 173, name: "Raspberry Pi 3 B+", details: "1GB RAM, 64 Bit CPU", price: 80.00, category: "Raspberry Pi Boards", img: "./assets/id173.png" },
-  { id: 174, name: "Raspberry Pi 4 B", details: "1GB: $75 / 2GB: $90 / 4GB: $105", price: 75.00, category: "Raspberry Pi Boards", img: "./assets/id174.png" },
-  { id: 175, name: "Raspberry Pi 5", details: "4GB: $115 / 8GB: $135", price: 115.00, category: "Raspberry Pi Boards", img: "./assets/id175.png" },
-  { id: 176, name: "Raspberry Pi Compute Module 4", details: "No Wireless: $65 / Wireless: $80", price: 65.00, category: "Raspberry Pi Boards", img: "./assets/id176.png" },
+  { id: 174, name: "Raspberry Pi 4 B", details: "1GB: $159 / 2GB: $90 / 4GB: $105", price: 159.00, category: "Raspberry Pi Boards", img: "./assets/id174.png" },
+  { id: 175, name: "Raspberry Pi 5 4GB", details: "4GB: $300 ", price: 300.00, category: "Raspberry Pi Boards", img: "./assets/id175.png" },
+  { id: 176, name: "Raspberry Pi Compute Module 4", details: "No Wireless: $85 ", price: 65.00, category: "Raspberry Pi Boards", img: "./assets/id176.png" },
   // --- Microcontrollers ---
   { id: 177, name: "ESP32-S3-WROOM-1", details: "Dual-core 240MHz | Wi-Fi + BLE | 16MB Flash | 8MB PSRAM | Native USB", price: 15.00, category: "Microcontrollers", img: "" },
 
@@ -255,8 +255,9 @@ const componentsData = [
 
   // --- Tools & Consumables ---
   { id: 203, name: "Conformal Coating Spray", details: "Moisture & corrosion protection for PCBs", price: 4.00, category: "Tools & Consumables", img: "" },
-
- 
+  { id: 174, name: "Raspberry Pi 4 B 2GB", details: "  2GB: ", price: 179.00, category: "Raspberry Pi Boards", img: "" },
+  { id: 174, name: "Raspberry Pi 4 B 4GB", details: " 4GB: ", price: 305.00, category: "Raspberry Pi Boards", img: "" },
+  { id: 175, name: "Raspberry Pi 5 8GB", details: "(out of stock) 8GB: ", price: "", category: "Raspberry Pi Boards", img: "" },
 ]
 // Contacts for component orders (rotate among these)
 
@@ -391,7 +392,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbzGLfQGc-w6uz28bie5O2c5bzFXWAG4D0R2asAmYRxmOY-xEd9ZVDoZtmSGF0DzvTYr5g/exec',
+        'https://script.google.com/macros/s/AKfycbzQmvVJDWTwDrdfwEiCSR--GsM6fpdoObVmRJU7ZDd84o1zv8_Planz1sFpX8HtoIe0FQ/exec',
         {
           method: 'POST',
           body: JSON.stringify(orderData),
