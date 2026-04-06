@@ -255,11 +255,9 @@ const componentsData = [
 
   // --- Tools & Consumables ---
   { id: 203, name: "Conformal Coating Spray", details: "Moisture & corrosion protection for PCBs", price: 4.00, category: "Tools & Consumables", img: "" },
-  { id: 174, name: "Raspberry Pi 4 B 2GB", details: "  2GB: ", price: 179.00, category: "Raspberry Pi Boards", img: "" },
-  { id: 174, name: "Raspberry Pi 4 B 4GB", details: " 4GB: ", price: 305.00, category: "Raspberry Pi Boards", img: "" },
-  { id: 175, name: "Raspberry Pi 5 8GB", details: "(out of stock) 8GB: ", price: "", category: "Raspberry Pi Boards", img: "" },
+  { id: 204, name: "Raspberry Pi 4 B 2GB", details: "  2GB: ", price: 179.00, category: "Raspberry Pi Boards", img: "" },
+  { id: 205, name: "Raspberry Pi 4 B 4GB", details: " 4GB: ", price: 305.00, category: "Raspberry Pi Boards", img: "" },
 ]
-// Contacts for component orders (rotate among these)
 
 const componentContacts = [
 
