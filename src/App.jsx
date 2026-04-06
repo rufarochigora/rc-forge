@@ -408,7 +408,7 @@ function App() {
         setOrderConfirmation({
           orderId: result.orderId,
           contact: currentContact,
-          componentsList,
+          
           total: calculateTotal()
         });
 
