@@ -391,7 +391,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbyaqlgUCANPnAEEpVquE26bguxkmuRBHeI7dbFikdc7hVwmFp3s-CkxBit2dR0-Lp0a6w/exec',
+        'https://script.google.com/macros/s/AKfycbzGLfQGc-w6uz28bie5O2c5bzFXWAG4D0R2asAmYRxmOY-xEd9ZVDoZtmSGF0DzvTYr5g/exec',
         {
           method: 'POST',
           body: JSON.stringify(orderData),
