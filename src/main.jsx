@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import PrivacyPolicy from './PrivacyPolicy.jsx'
-import TermsOfService from './TermsOfServicee.jsx'
+import TermsOfService from './TermsOfService.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
