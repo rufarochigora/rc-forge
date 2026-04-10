@@ -171,7 +171,7 @@ const componentsData = [
   { id: 140, name: "IC Sockets", details: "", price: 0.50, category: "Basic Components", img: "./assets/id140.png" },
   { id: 141, name: "Switches", details: "Two state", price: 0.50, category: "Basic Components", img: "./assets/id141.png" },
   { id: 142, name: "Transistors TIP102/20/22/27/42/47 series", details: "TIP102/20/22/27/42/47 series", price: 0.25, category: "Basic Components", img: "./assets/id142.png" },
-  { id: 143, name: "Diodes PN Junction / Zener", details: "PN Junction / Zener", price: 0.15, category: "Basic Components", img: "./assets/id143.png" },
+  { id: 143, name: "Diodes PN Junction / Zener 1N4728A X 5", details: "PN Junction PACK OF 5", price: 1.00, category: "Basic Components", img: "./assets/id143.png" },
   { id: 144, name: "MOSFET IRF640N | 220V 18A", details: "IRF640N | 220V 18A", price: 1.00, category: "Basic Components", img: "./assets/id144.png" },
   { id: 145, name: "Heat Sinks", details: "", price: 1.50, category: "Basic Components", img: "./assets/id145.png" },
   { id: 146, name: "Wheel", details: "", price: 5.00, category: "Basic Components", img: "./assets/id146.png" },
@@ -348,7 +348,7 @@ const componentsData = [
   { id: 269, name: "MicroSD Card Module", details: "SPI Interface | 3.3V/5V Compatible | FAT32 | Data Logging", price: 0.00, category: "Memory & Storage", img: "" },
 
   // --- Display Modules ---
-  { id: 270, name: "LCD 16x2 HD44780 Module", details: "16x2 Character | 5V | Parallel/I²C | Blue/Green Backlight", price: 0.00, category: "Actuators & Output Devices", img: "" },
+  { id: 270, name: "LCD 16x2 HD44780 Module", details: "16x2 Character | 5V | Parallel/I²C | Blue/Green Backlight", price: 6.00, category: "Actuators & Output Devices", img: "" },
   { id: 271, name: "LCD 20x4 HD44780 Module", details: "20x4 Character | 5V | I²C Backpack | Blue Backlight", price: 0.00, category: "Actuators & Output Devices", img: "" },
   { id: 272, name: "E-Paper Display 2.9\" GDEH029A1", details: "296x128 | SPI | 3.3V | Ultra-Low Power | Black/White", price: 0.00, category: "Actuators & Output Devices", img: "" },
   { id: 273, name: "7-Segment Display TM1637 4-Digit", details: "0.36\" | I²C | Clock/Counter Display | 3.3–5V | Red", price: 0.00, category: "Actuators & Output Devices", img: "" },
