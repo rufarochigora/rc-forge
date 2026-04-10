@@ -687,6 +687,7 @@ function App() {
   const [customerName, setCustomerName] = useState('');
   const [customerWhatsApp, setCustomerWhatsApp] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [consentGiven, setConsentGiven] = useState(false);
   const [orderConfirmation, setOrderConfirmation] = useState(null);
   const [gadgetDescription, setGadgetDescription] = useState('');
   const [gadgetContactIndex, setGadgetContactIndex] = useState(() => {
@@ -696,6 +697,7 @@ function App() {
 
   // ── Search state ──
   const [searchTerm, setSearchTerm] = useState('');
+  
 
   // ── Filtered products ──
   const filteredProducts = useMemo(() => {
@@ -968,19 +970,38 @@ function App() {
                 <span style={{ color: '#0984e3' }}>${calculateTotal()}</span>
               </div>
 
-              <button
-                onClick={sendComponentOrder}
-                disabled={isSubmitting}
-                style={{
-                  width: '100%', marginTop: '20px', padding: '15px',
-                  background: isSubmitting ? '#b2bec3' : '#00b894',
-                  color: '#fff', border: 'none', borderRadius: '5px',
-                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                  fontWeight: 'bold', fontSize: '1.1rem', transition: 'background 0.2s'
-                }}
-              >
-                {isSubmitting ? 'Registering Order...' : 'Book via WhatsApp'}
-              </button>
+
+                {/* Consent Checkbox */}
+                <div style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <input
+                    type="checkbox"
+                    id="consent"
+                    checked={consentGiven}
+                    onChange={(e) => setConsentGiven(e.target.checked)}
+                    style={{ marginTop: '3px', cursor: 'pointer' }}
+                  />
+                  <label htmlFor="consent" style={{ fontSize: '0.8rem', color: '#636e72', cursor: 'pointer', lineHeight: '1.5' }}>
+                    I agree to the{' '}
+                    <a href="/terms" target="_blank" style={{ color: '#4d9db3' }}>Terms of Service</a>
+                    {' '}and{' '}
+                    <a href="/privacy" target="_blank" style={{ color: '#4d9db3' }}>Privacy Policy</a>.
+                    I consent to RC Forge storing my name and WhatsApp number to process this order.
+                  </label>
+                </div>
+
+                <button
+                  onClick={sendComponentOrder}
+                  disabled={isSubmitting || !consentGiven}
+                  style={{
+                    width: '100%', marginTop: '12px', padding: '15px',
+                    background: isSubmitting || !consentGiven ? '#b2bec3' : '#00b894',
+                    color: '#fff', border: 'none', borderRadius: '5px',
+                    cursor: isSubmitting || !consentGiven ? 'not-allowed' : 'pointer',
+                    fontWeight: 'bold', fontSize: '1.1rem'
+                  }}
+                >
+                  {isSubmitting ? 'Registering Order...' : 'Book via WhatsApp'}
+                </button>
             </>
           )}
         </div>

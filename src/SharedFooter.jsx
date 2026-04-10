@@ -57,12 +57,17 @@ export default function SharedFooter() {
                         <a href="mailto:rcforge.admin@gmail.com" style={styles.emailLink}>
                             ✉ rcforge.admin@gmail.com
                         </a>
-                        <a href="mailto:rcforge.customerservice@gmail.com" style={styles.emailLink}>
-                            🎧 rcforge.customerservice@gmail.com
+                        <a href="mailto:rcforge.contact@gmail.com" style={styles.emailLink}>
+                            🎧 rcforge.contact@gmail.com
                         </a>
                     </div>
                 </div>
-
+                {/* Legal Links */}
+                <div style={{ marginTop: '8px', display: 'flex', gap: '16px' }}>
+                    <a href="/privacy" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Privacy Policy</a>
+                    <a href="/terms" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Terms of Service</a>
+                </div>
+                
                 {/* Partner: TMT Logistics */}
                 <div style={styles.col}>
                     <h3 style={{ ...styles.brandTitle, color: '#25D366' }}>TMT Logistics</h3>
