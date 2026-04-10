@@ -85,7 +85,7 @@ const componentsData = [
   { id: 73, name: "PN532 NFC Module", details: "PN532", price: 9.00, category: "Sensors & Input Devices", img: "./assets/id73.png" },
   { id: 74, name: "Barometric Pressure Sensor BMP280, I2C", details: "BMP280, I2C", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id74.png" },
   { id: 75, name: "Pressure Sensor", details: "BF350", price: 1.15, category: "Sensors & Input Devices", img: "./assets/id75.png" },
-  { id: 75, name: "analog pressure sensor MPX4250AP", details: "MPX4250AP", price: 0.00, category: "Sensors & Input Devices", img: "" },
+  { id: 75.0, name: "analog pressure sensor MPX4250AP", details: "MPX4250AP", price: 0.00, category: "Sensors & Input Devices", img: "" },
   { id: 76, name: "Proximity Sensor", details: "5V, Inductive | NPN / PNP", price: 10.00, category: "Sensors & Input Devices", img: "./assets/id76.png" },
   { id: 77, name: "Pulse/Heart Rate Sensor", details: "DC 3V - 5V", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id77.png" },
   { id: 78, name: "Rain Sensor", details: "Digital output | DC 3.3V - 5V", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id78.png" },
@@ -198,7 +198,7 @@ const componentsData = [
   { id: 158, name: "2WD Car Chassis Kit 2 Wheels + motors + Chasis", details: "2 Wheels + motors + Chasis", price: 20.00, category: "Robotics & Kits", img: "./assets/id158.png" },
   { id: 159, name: "4WD Car Chassis Kit 4 Wheels + motors + Chasis", details: "4 Wheels + motors + Chasis", price: 35.00, category: "Robotics & Kits", img: "./assets/id159.png" },
   { id: 160, name: "Tanker Chassis Kit 6-12V Motor ", details: "6-12V Motor", price: 40.00, category: "Robotics & Kits", img: "./assets/id160.png" },
-  { id: 160, name: "Tank robot chassis 30kg big load WT-500S ", details: " Motor", price: 0.00, category: "Robotics & Kits", img: "./assets/id160.png" },
+  { id: 160.0, name: "Tanker robot chassis 30kg big load WT-500S ", details: " Motor", price: 0.00, category: "Robotics & Kits", img: "" },
   { id: 161, name: "4 DOF Robot Arm Kit", details: "Comes programmed", price: 40.00, category: "Robotics & Kits", img: "./assets/id161.png" },
 
   // --- Starter Kits ---
