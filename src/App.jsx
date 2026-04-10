@@ -733,6 +733,7 @@ function App() {
     if (customerWhatsApp.trim() === '') { alert('Please enter your WhatsApp number before booking.'); return; }
     setIsSubmitting(true);
     const orderData = {
+      token: import.meta.env.VITE_ORDER_TOKEN,
       customerName: customerName.trim(),
       whatsapp: customerWhatsApp.trim(),
       items: cart.map(item => ({ name: item.name, quantity: item.quantity, unitPrice: item.price })),
