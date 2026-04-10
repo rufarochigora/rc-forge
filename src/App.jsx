@@ -198,6 +198,7 @@ const componentsData = [
   { id: 158, name: "2WD Car Chassis Kit 2 Wheels + motors + Chasis", details: "2 Wheels + motors + Chasis", price: 20.00, category: "Robotics & Kits", img: "./assets/id158.png" },
   { id: 159, name: "4WD Car Chassis Kit 4 Wheels + motors + Chasis", details: "4 Wheels + motors + Chasis", price: 35.00, category: "Robotics & Kits", img: "./assets/id159.png" },
   { id: 160, name: "Tanker Chassis Kit 6-12V Motor ", details: "6-12V Motor", price: 40.00, category: "Robotics & Kits", img: "./assets/id160.png" },
+  { id: 160, name: "Tank robot chassis 30kg big load WT-500S ", details: " Motor", price: 0.00, category: "Robotics & Kits", img: "./assets/id160.png" },
   { id: 161, name: "4 DOF Robot Arm Kit", details: "Comes programmed", price: 40.00, category: "Robotics & Kits", img: "./assets/id161.png" },
 
   // --- Starter Kits ---
