@@ -123,7 +123,7 @@ const componentsData = [
   { id: 105.2, name: "Solid State Relay 4ch", details: "/ 4ch: $8.00", price: 8.00, category: "Actuators & Output Devices", img: "./assets/id105.png" },
   { id: 106, name: "IR Relay Module  1 channel", details: "5V / 12V | 1 channel", price: 7.00, category: "Actuators & Output Devices", img: "./assets/id106.png" },
   { id: 107.0, name: "Servo Motors SG90", details: "SG90: $6 ", price: 6.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
-  { id: 107.1, name: "Servo Motors SG90", details: " MG90S: $8 ", price: 8.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
+  { id: 107.1, name: "Servo Motors MG90S", details: " MG90S: $8 ", price: 8.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
   { id: 107.2, name: "Servo Motors MG995R:", details: " MG995R: $10", price: 10.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
   { id: 108, name: "NEMA-17 Motor", details: "5V", price: 24.00, category: "Actuators & Output Devices", img: "./assets/id108.png" },
   { id: 109, name: "Solenoid Valve", details: "", price: 9.00, category: "Actuators & Output Devices", img: "./assets/id109.png" },
@@ -699,7 +699,7 @@ function App() {
 
   // ── Search state ──
   const [searchTerm, setSearchTerm] = useState('');
-  
+
 
   // ── Filtered products ──
   const filteredProducts = useMemo(() => {
@@ -973,37 +973,37 @@ function App() {
               </div>
 
 
-                {/* Consent Checkbox */}
-                <div style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <input
-                    type="checkbox"
-                    id="consent"
-                    checked={consentGiven}
-                    onChange={(e) => setConsentGiven(e.target.checked)}
-                    style={{ marginTop: '3px', cursor: 'pointer' }}
-                  />
-                  <label htmlFor="consent" style={{ fontSize: '0.8rem', color: '#636e72', cursor: 'pointer', lineHeight: '1.5' }}>
-                    I agree to the{' '}
-                    <a href="/terms" target="_blank" style={{ color: '#4d9db3' }}>Terms of Service</a>
-                    {' '}and{' '}
-                    <a href="/privacy" target="_blank" style={{ color: '#4d9db3' }}>Privacy Policy</a>.
-                    I consent to RC Forge storing my name and WhatsApp number to process this order.
-                  </label>
-                </div>
+              {/* Consent Checkbox */}
+              <div style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <input
+                  type="checkbox"
+                  id="consent"
+                  checked={consentGiven}
+                  onChange={(e) => setConsentGiven(e.target.checked)}
+                  style={{ marginTop: '3px', cursor: 'pointer' }}
+                />
+                <label htmlFor="consent" style={{ fontSize: '0.8rem', color: '#636e72', cursor: 'pointer', lineHeight: '1.5' }}>
+                  I agree to the{' '}
+                  <a href="/terms" target="_blank" style={{ color: '#4d9db3' }}>Terms of Service</a>
+                  {' '}and{' '}
+                  <a href="/privacy" target="_blank" style={{ color: '#4d9db3' }}>Privacy Policy</a>.
+                  I consent to RC Forge storing my name and WhatsApp number to process this order.
+                </label>
+              </div>
 
-                <button
-                  onClick={sendComponentOrder}
-                  disabled={isSubmitting || !consentGiven}
-                  style={{
-                    width: '100%', marginTop: '12px', padding: '15px',
-                    background: isSubmitting || !consentGiven ? '#b2bec3' : '#00b894',
-                    color: '#fff', border: 'none', borderRadius: '5px',
-                    cursor: isSubmitting || !consentGiven ? 'not-allowed' : 'pointer',
-                    fontWeight: 'bold', fontSize: '1.1rem'
-                  }}
-                >
-                  {isSubmitting ? 'Registering Order...' : 'Book via WhatsApp'}
-                </button>
+              <button
+                onClick={sendComponentOrder}
+                disabled={isSubmitting || !consentGiven}
+                style={{
+                  width: '100%', marginTop: '12px', padding: '15px',
+                  background: isSubmitting || !consentGiven ? '#b2bec3' : '#00b894',
+                  color: '#fff', border: 'none', borderRadius: '5px',
+                  cursor: isSubmitting || !consentGiven ? 'not-allowed' : 'pointer',
+                  fontWeight: 'bold', fontSize: '1.1rem'
+                }}
+              >
+                {isSubmitting ? 'Registering Order...' : 'Book via WhatsApp'}
+              </button>
             </>
           )}
         </div>
