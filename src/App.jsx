@@ -85,6 +85,7 @@ const componentsData = [
   { id: 73, name: "PN532 NFC Module", details: "PN532", price: 9.00, category: "Sensors & Input Devices", img: "./assets/id73.png" },
   { id: 74, name: "Barometric Pressure Sensor BMP280, I2C", details: "BMP280, I2C", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id74.png" },
   { id: 75, name: "Pressure Sensor", details: "BF350", price: 1.15, category: "Sensors & Input Devices", img: "./assets/id75.png" },
+  { id: 75, name: "analog pressure sensor MPX4250AP", details: "MPX4250AP", price: 0.00, category: "Sensors & Input Devices", img: "" },
   { id: 76, name: "Proximity Sensor", details: "5V, Inductive | NPN / PNP", price: 10.00, category: "Sensors & Input Devices", img: "./assets/id76.png" },
   { id: 77, name: "Pulse/Heart Rate Sensor", details: "DC 3V - 5V", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id77.png" },
   { id: 78, name: "Rain Sensor", details: "Digital output | DC 3.3V - 5V", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id78.png" },
