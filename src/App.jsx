@@ -85,7 +85,7 @@ const componentsData = [
   { id: 73, name: "PN532 NFC Module", details: "PN532", price: 9.00, category: "Sensors & Input Devices", img: "./assets/id73.png" },
   { id: 74, name: "Barometric Pressure Sensor BMP280, I2C", details: "BMP280, I2C", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id74.png" },
   { id: 75, name: "Pressure Sensor", details: "BF350", price: 1.15, category: "Sensors & Input Devices", img: "./assets/id75.png" },
-  { id: 75.0, name: "analog pressure sensor MPX4250AP", details: "MPX4250AP", price: 0.00, category: "Sensors & Input Devices", img: "" },
+  { id: 75.5, name: "analog pressure sensor MPX4250AP", details: "MPX4250AP", price: 0.00, category: "Sensors & Input Devices", img: "" },
   { id: 76, name: "Proximity Sensor", details: "5V, Inductive | NPN / PNP", price: 10.00, category: "Sensors & Input Devices", img: "./assets/id76.png" },
   { id: 77, name: "Pulse/Heart Rate Sensor", details: "DC 3V - 5V", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id77.png" },
   { id: 78, name: "Rain Sensor", details: "Digital output | DC 3.3V - 5V", price: 5.00, category: "Sensors & Input Devices", img: "./assets/id78.png" },
@@ -115,14 +115,14 @@ const componentsData = [
   { id: 101, name: "TFT Display", details: "2.4\": $10.50 / 3.5\": $14.00", price: 10.50, category: "Actuators & Output Devices", img: "./assets/id101.png" },
   { id: 102, name: "DC Motor", details: "3V: $5.00 / 6V: $7.00 / 12V: $9.00", price: 5.00, category: "Actuators & Output Devices", img: "./assets/id102.png" },
   { id: 103, name: "Liquid Pump", details: "5V: $5.00 / 12V Inline: $12.00", price: 5.00, category: "Actuators & Output Devices", img: "./assets/id103.png" },
-  { id: 104.0, name: "Relay Modules single channel", details: "1ch: $3.50 ", price: 3.50, category: "Actuators & Output Devices", img: "./assets/id104.png" },
+  { id: 104.3, name: "Relay Modules single channel", details: "1ch: $3.50 ", price: 3.50, category: "Actuators & Output Devices", img: "./assets/id104.png" },
   { id: 104.1, name: "Relay Modules 2 channel", details: "2ch: $4.50 ", price: 4.50, category: "Actuators & Output Devices", img: "./assets/id104.png" },
   { id: 104.2, name: "Relay Modules 4 channel", details: " 4ch: $7.00", price: 7.00, category: "Actuators & Output Devices", img: "./assets/id104.png" },
-  { id: 105.0, name: "Solid State Relay 1ch", details: "1ch: $4.00 ", price: 4.00, category: "Actuators & Output Devices", img: "./assets/id105.png" },
+  { id: 105.3, name: "Solid State Relay 1ch", details: "1ch: $4.00 ", price: 4.00, category: "Actuators & Output Devices", img: "./assets/id105.png" },
   { id: 105.1, name: "Solid State Relay 2ch", details: "2ch: $6.00 ", price: 6.00, category: "Actuators & Output Devices", img: "./assets/id105.png" },
   { id: 105.2, name: "Solid State Relay 4ch", details: "/ 4ch: $8.00", price: 8.00, category: "Actuators & Output Devices", img: "./assets/id105.png" },
   { id: 106, name: "IR Relay Module  1 channel", details: "5V / 12V | 1 channel", price: 7.00, category: "Actuators & Output Devices", img: "./assets/id106.png" },
-  { id: 107.0, name: "Servo Motors SG90", details: "SG90: $6 ", price: 6.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
+  { id: 107.3, name: "Servo Motors SG90", details: "SG90: $6 ", price: 6.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
   { id: 107.1, name: "Servo Motors MG90S", details: " MG90S: $8 ", price: 8.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
   { id: 107.2, name: "Servo Motors MG995R:", details: " MG995R: $10", price: 10.00, category: "Actuators & Output Devices", img: "./assets/id107.png" },
   { id: 108, name: "NEMA-17 Motor", details: "5V", price: 24.00, category: "Actuators & Output Devices", img: "./assets/id108.png" },
@@ -130,25 +130,25 @@ const componentsData = [
   { id: 110, name: "Wheel & Motor", details: "", price: 7.00, category: "Actuators & Output Devices", img: "./assets/id110.png" },
 
   // --- Power & Connections ---
-  { id: 111.0, name: "Breadboard 400 pin", details: " 400 pin: $3.50", price: 3.50, category: "Power & Connections", img: "./assets/id111.png" },
-  { id: 111.1, name: "Breadboard 830 pin:", details: " 830 pin: $4.50", price: 4.50, category: "Power & Connections", img: "./assets/id111.png" },
-  { id: 112.0, name: "PCB 6x8 cm", details: "6x8 cm: $3.50 ", price: 3.50, category: "Power & Connections", img: "./assets/id112.png" },
-  { id: 112.1, name: "PCB 8x12 cm:", details: " 8x12 cm: $4.00", price: 4.00, category: "Power & Connections", img: "./assets/id112.png" },
-  { id: 113.0, name: "Veroboard 6x9 cm: ", details: "6x9 cm: $4.50 ", price: 4.50, category: "Power & Connections", img: "./assets/id113.png" },
-  { id: 113.1, name: "Veroboard 9x12 cm:", details: " 9x12 cm: $5.50", price: 5.50, category: "Power & Connections", img: "./assets/id113.png" },
-  { id: 114.0, name: "Copper Clad Plate 7x10 cm:", details: "7x10 cm: $6.00 ", price: 6.00, category: "Power & Connections", img: "./assets/id114.png" },
-  { id: 114.1, name: "Copper Clad Plate  15x20 cm:", details: "15x20 cm: $11.00", price: 11.00, category: "Power & Connections", img: "./assets/id114.png" },
+  { id: 111.1, name: "Breadboard 400 pin", details: " 400 pin: $3.50", price: 3.50, category: "Power & Connections", img: "./assets/id111.png" },
+  { id: 111.2, name: "Breadboard 830 pin:", details: " 830 pin: $4.50", price: 4.50, category: "Power & Connections", img: "./assets/id111.png" },
+  { id: 112.1, name: "PCB 6x8 cm", details: "6x8 cm: $3.50 ", price: 3.50, category: "Power & Connections", img: "./assets/id112.png" },
+  { id: 112.2, name: "PCB 8x12 cm:", details: " 8x12 cm: $4.00", price: 4.00, category: "Power & Connections", img: "./assets/id112.png" },
+  { id: 113.1, name: "Veroboard 6x9 cm: ", details: "6x9 cm: $4.50 ", price: 4.50, category: "Power & Connections", img: "./assets/id113.png" },
+  { id: 113.2, name: "Veroboard 9x12 cm:", details: " 9x12 cm: $5.50", price: 5.50, category: "Power & Connections", img: "./assets/id113.png" },
+  { id: 114.1, name: "Copper Clad Plate 7x10 cm:", details: "7x10 cm: $6.00 ", price: 6.00, category: "Power & Connections", img: "./assets/id114.png" },
+  { id: 114.2, name: "Copper Clad Plate  15x20 cm:", details: "15x20 cm: $11.00", price: 11.00, category: "Power & Connections", img: "./assets/id114.png" },
   { id: 115, name: "Jumper cables 20cm/30cm/40cm", details: "20cm/30cm/40cm ($1 for set)", price: 1.00, category: "Power & Connections", img: "./assets/id115.png" },
   { id: 116, name: "Jumper to Aligator", details: "", price: 0.50, category: "Power & Connections", img: "./assets/id116.png" },
-  { id: 117.0, name: "XH Plug 3 Pin", details: "3 Pin: $0.80 ", price: 0.80, category: "Power & Connections", img: "./assets/id117.png" },
-  { id: 117.1, name: "XH Plug  5 Pin", details: " 5 Pin: $1.00", price: 1.00, category: "Power & Connections", img: "./assets/id117.png" },
+  { id: 117.1, name: "XH Plug 3 Pin", details: "3 Pin: $0.80 ", price: 0.80, category: "Power & Connections", img: "./assets/id117.png" },
+  { id: 117.2, name: "XH Plug  5 Pin", details: " 5 Pin: $1.00", price: 1.00, category: "Power & Connections", img: "./assets/id117.png" },
   { id: 118, name: "Breadboard Power Supply Module", details: "", price: 3.50, category: "Power & Connections", img: "./assets/id118.png" },
-  { id: 119.0, name: "DC Power Supply Adapter", details: "5V: $10.00 ", price: 10.00, category: "Power & Connections", img: "./assets/id119.png" },
-  { id: 119.1, name: "DC Power Supply Adapter", details: "  12V: $4.00", price: 4.00, category: "Power & Connections", img: "./assets/id119.png" },
-  { id: 120.0, name: "Battery Holder 2 Bay:", details: "2 Bay: $2.50 ", price: 2.50, category: "Power & Connections", img: "./assets/id120.png" },
-  { id: 120.1, name: "Battery Holder 3 Bay ", details: " 3 Bay: $3.50", price: 3.50, category: "Power & Connections", img: "./assets/id120.png" },
-  { id: 121.0, name: "AC - DC Step Down Transformer 5V", details: "5V: $5.00 ", price: 5.00, category: "Power & Connections", img: "./assets/id121.png" },
-  { id: 121.1, name: "AC - DC Step Down Transformer 12V:", details: " 12V: $6.00", price: 6.00, category: "Power & Connections", img: "./assets/id121.png" },
+  { id: 119.1, name: "DC Power Supply Adapter", details: "5V: $10.00 ", price: 10.00, category: "Power & Connections", img: "./assets/id119.png" },
+  { id: 119.2, name: "DC Power Supply Adapter", details: "  12V: $4.00", price: 4.00, category: "Power & Connections", img: "./assets/id119.png" },
+  { id: 120.1, name: "Battery Holder 2 Bay:", details: "2 Bay: $2.50 ", price: 2.50, category: "Power & Connections", img: "./assets/id120.png" },
+  { id: 120.2, name: "Battery Holder 3 Bay ", details: " 3 Bay: $3.50", price: 3.50, category: "Power & Connections", img: "./assets/id120.png" },
+  { id: 121.1, name: "AC - DC Step Down Transformer 5V", details: "5V: $5.00 ", price: 5.00, category: "Power & Connections", img: "./assets/id121.png" },
+  { id: 121.2, name: "AC - DC Step Down Transformer 12V:", details: " 12V: $6.00", price: 6.00, category: "Power & Connections", img: "./assets/id121.png" },
   { id: 122, name: "DC - AC Inverter", details: "12VDC to 220VAC 120W", price: 10.00, category: "Power & Connections", img: "./assets/id122.png" },
   { id: 123, name: "Step-down Power Supply Module LM2596 Adjustable", details: "LM2596 Adjustable", price: 6.00, category: "Power & Connections", img: "./assets/id123.png" },
   { id: 124, name: "5A DC-DC Boost Converter", details: "XL6019 Adjustable", price: 6.00, category: "Power & Connections", img: "./assets/id124.png" },
@@ -178,13 +178,13 @@ const componentsData = [
   { id: 146, name: "Wheel", details: "", price: 5.00, category: "Basic Components", img: "./assets/id146.png" },
 
   // --- DIY Drone Parts ---
-  { id: 147.0, name: "FPV F330 MultiCopter Frame Without gear", details: " Without: $28.00", price: 28.00, category: "DIY Drone Parts", img: "./assets/id147.png" },
+  { id: 147.2, name: "FPV F330 MultiCopter Frame Without gear", details: " Without: $28.00", price: 28.00, category: "DIY Drone Parts", img: "./assets/id147.png" },
   { id: 147.1, name: "FPV F330 MultiCopter Frame With gear:", details: "With gear: $36.00 ", price: 36.00, category: "DIY Drone Parts", img: "./assets/id147.png" },
   { id: 148, name: "F330 Landing Gear Set", details: "", price: 15.00, category: "DIY Drone Parts", img: "./assets/id148.png" },
   { id: 149, name: "F330 Blades Protection Set", details: "", price: 15.00, category: "DIY Drone Parts", img: "./assets/id149.png" },
   { id: 150, name: "8045 Propeller Set", details: "Self-locking | For 2212 Motor", price: 12.00, category: "DIY Drone Parts", img: "./assets/id150.png" },
   { id: 151, name: "MX221 2212 920kv Brushless Motor Set", details: "KV: 920kv | 3mm shaft", price: 24.00, category: "DIY Drone Parts", img: "./assets/id151.png" },
-  { id: 152.0, name: "Hobbywing Skywalker ESC Speed Controller", details: " 20A: $20 ", price: 18.00, category: "DIY Drone Parts", img: "./assets/id152.png" },
+  { id: 152.4, name: "Hobbywing Skywalker ESC Speed Controller", details: " 20A: $20 ", price: 18.00, category: "DIY Drone Parts", img: "./assets/id152.png" },
   { id: 152.1, name: "Hobbywing Skywalker ESC Speed Controller 15A", details: "15A: $18 ", price: 18.00, category: "DIY Drone Parts", img: "./assets/id152.png" },
   { id: 152.2, name: "Hobbywing Skywalker ESC Speed Controller 20A", details: " / 20A: $20 ", price: 20.00, category: "DIY Drone Parts", img: "./assets/id152.png" },
   { id: 152.3, name: "Hobbywing Skywalker ESC Speed Controller 40A:", details: " 40A: $24", price: 24.00, category: "DIY Drone Parts", img: "./assets/id152.png" },
@@ -198,7 +198,7 @@ const componentsData = [
   { id: 158, name: "2WD Car Chassis Kit 2 Wheels + motors + Chasis", details: "2 Wheels + motors + Chasis", price: 20.00, category: "Robotics & Kits", img: "./assets/id158.png" },
   { id: 159, name: "4WD Car Chassis Kit 4 Wheels + motors + Chasis", details: "4 Wheels + motors + Chasis", price: 35.00, category: "Robotics & Kits", img: "./assets/id159.png" },
   { id: 160, name: "Tanker Chassis Kit 6-12V Motor ", details: "6-12V Motor", price: 40.00, category: "Robotics & Kits", img: "./assets/id160.png" },
-  { id: 160.0, name: "Tanker robot chassis 30kg big load WT-500S ", details: " Motor", price: 0.00, category: "Robotics & Kits", img: "" },
+  { id: 160.5, name: "Tanker robot chassis 30kg big load WT-500S ", details: " Motor", price: 0.00, category: "Robotics & Kits", img: "" },
   { id: 161, name: "4 DOF Robot Arm Kit", details: "Comes programmed", price: 40.00, category: "Robotics & Kits", img: "./assets/id161.png" },
 
   // --- Starter Kits ---
@@ -458,13 +458,14 @@ const componentsData = [
   { id: 343, name: "Stepper Motor 28BYJ-48 5V with ULN2003 Driver Board", details: "5V DC | 1/64 Reduction | 200mA | UART Step | Unipolar | Includes ULN2003 PCB Driver", price: 0.00, category: "Actuation & Feedback", img: "" },
   { id: 344, name: "Micro Metal Gear Motor 6V 300RPM N20 with Encoder", details: "6V | 300RPM | N20 | 1:30 Gear | Carbon Brush | Encoder 7 PPR | 25mm Shaft | Dual Shaft", price: 0.00, category: "Actuators & Output Devices", img: "" },
   { id: 345, name: "Worm Gear Motor 12V 10RPM JGY-370 High Torque", details: "12V | 10RPM | JGY-370 | 0.8–1Nm Torque | Self-locking Worm | For Locks/Valves/Lifts", price: 0.00, category: "Actuators & Output Devices", img: "" },
-
+  { id: 345.1, name: "BO (Battery Operated) moto 3V–12V DCr ", details: " 3V–12V DC", price: 0.00, category: "Actuators & Output Devices", img: "" },
   // --- Prototyping & Fabrication ---
   { id: 346, name: "KiCad 6 Compatible SMD Prototype PCB 10x10cm Set of 5", details: "10×10cm | 2-Layer | FR-4 | 1.6mm | HASL | Green Solder Mask | White Silkscreen | 5pcs", price: 0.00, category: "PCB & Fabrication", img: "" },
   { id: 347, name: "Kapton Polyimide Tape 10mm x 33m High Temp", details: "10mm Wide | 33m Roll | 260°C Rated | PCB Masking | Reflow Soldering | Electronics Repair", price: 0.00, category: "Tools & Consumables", img: "" },
   { id: 348, name: "Lead-Free Solder Paste Sn42Bi58 138°C Syringe 10cc", details: "Sn42Bi58 | Low Temp 138°C | No-Clean | 10cc Syringe | SMD Reflow | T4 Particle Size", price: 0.00, category: "Tools & Consumables", img: "" },
   { id: 349, name: "PCB Drill Bit Set 0.3mm–1.2mm 10 Sizes HSS", details: "0.3/0.4/0.5/0.6/0.7/0.8/0.9/1.0/1.1/1.2mm | HSS | Carbide Coated | PCB / Via Drilling", price: 0.00, category: "Tools & Consumables", img: "" },
   { id: 350, name: "Anti-Static ESD Wrist Strap Adjustable with Grounding Lead", details: "Adjustable Band | 1MΩ Resistor | 1.8m Coiled Lead | Alligator Clip | PCB / IC Safety", price: 0.00, category: "Tools & Consumables", img: "" },
+  { id: 351, name: "lidar sensor", details: "for robotics automation", price: 0.00, category: "sensors", img: "" },
 ];
 
 const componentContacts = [
@@ -853,8 +854,8 @@ function App() {
               </button>
             </div>
           ) : (
-            filteredProducts.map(product => (
-              <div key={product.id} style={{
+              filteredProducts.map((product, index) => (
+                <div key={index} style={{
                 background: '#fff', borderRadius: '10px', padding: '15px',
                 textAlign: 'center', boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
                 display: 'flex', flexDirection: 'column', justifyContent: 'space-between'
@@ -917,8 +918,8 @@ function App() {
           ) : (
             <>
               <div style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '5px' }}>
-                {cart.map(item => (
-                  <div key={item.id} style={{
+                  {cart.map((item, index) => (
+                    <div key={`cart-${index}`} style={{
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                     marginBottom: '10px', fontSize: '0.9rem',
                     borderBottom: '1px solid #09090a', paddingBottom: '5px'
