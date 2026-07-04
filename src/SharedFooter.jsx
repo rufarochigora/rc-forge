@@ -62,17 +62,14 @@ export default function SharedFooter() {
                         </a>
                     </div>
                 </div>
-                {/* Legal Links */}
-                <div style={{ marginTop: '8px', display: 'flex', gap: '16px' }}>
-                    <a href="/privacy" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Privacy Policy</a>
-                    <a href="/terms" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Terms of Service</a>
-                </div>
-                
+
+                {/* Legal Links + Track Order — single block (duplicate removed) */}
                 <div style={{ marginTop: '8px', display: 'flex', gap: '16px' }}>
                     <a href="/track" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Track Order</a>
                     <a href="/privacy" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Privacy Policy</a>
                     <a href="/terms" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Terms of Service</a>
                 </div>
+
                 {/* Partner: TMT Logistics */}
                 <div style={styles.col}>
                     <h3 style={{ ...styles.brandTitle, color: '#25D366' }}>TMT Logistics</h3>
@@ -105,13 +102,30 @@ export default function SharedFooter() {
                     </a>
                 </div>
 
+                {/* Product: SynapseSeed */}
+                <div style={styles.col}>
+                    <h3 style={{ ...styles.brandTitle, color: '#4d9db3' }}>SynapseSeed</h3>
+                    <p style={styles.brandDesc}>
+                        AI-powered Seed Production Intelligence Platform for hybrid seed companies — field monitoring, quality inspection, and storage viability prediction.
+                    </p>
+                    <a
+                        href="https://synapseseed.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ ...styles.visitLink, color: '#4d9db3' }}
+                    >
+                        Visit SynapseSeed →
+                    </a>
+                </div>
+
                 {/* Ecosystem */}
                 <div style={styles.col}>
                     <h3 style={{ ...styles.brandTitle, color: '#fff' }}>Our Ecosystem</h3>
                     <p style={styles.ecosystemText}>
                         Prototype locally with <strong style={{ color: '#25D366' }}>RC Forge</strong>.<br />
                         Source at scale with <strong style={{ color: '#25D366' }}>TMT Logistics</strong>.<br />
-                        Stay protected with <strong style={{ color: '#eec643' }}>Tunje Amakhosi</strong>.
+                        Stay protected with <strong style={{ color: '#eec643' }}>Tunje Amakhosi</strong>.<br />
+                        Grow smarter with <strong style={{ color: '#4d9db3' }}>SynapseSeed</strong>.
                     </p>
                 </div>
 
@@ -135,7 +149,7 @@ export default function SharedFooter() {
                     ))}
                 </div>
                 <p style={styles.copyright}>
-                    © {currentYear} RC Forge · TMT Logistics · Tunje Amakhosi Security. All Rights Reserved.
+                    © {currentYear} RC Forge · TMT Logistics · Tunje Amakhosi Security · SynapseSeed. All Rights Reserved.
                 </p>
             </div>
         </footer>

@@ -19,6 +19,18 @@ const SOCIALS = [
         icon: '📷',
         color: '#E1306C',
     },
+    {
+        label: 'WhatsApp Channel',
+        url: 'https://whatsapp.com/channel/0029VbDDmZN9MF94EWQBjB0P',
+        icon: '💬',
+        color: '#25D366',
+    },
+    {
+        label: 'Telegram',
+        url: 'https://t.me/rcforge',
+        icon: '✈',
+        color: '#229ED9',
+    },
 ];
 
 export default function SocialBar() {
