@@ -5443,5 +5443,19 @@
     "legacyId": 351,
     "createdAt": "2026-08-15T14:54:31.167Z",
     "updatedAt": "2026-08-15T14:54:31.167Z"
+  },
+  {
+    "id": "TEST-001",
+    "sku": "TEST-001",
+    "name": "Test Product",
+    "price": 1,
+    "currency": "USD",
+    "stock": 0,
+    "category": "Test",
+    "description": "Testing photo upload",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/TEST-001.jpg",
+    "available": false,
+    "createdAt": "2026-08-15T17:09:03.927Z",
+    "updatedAt": "2026-08-15T17:09:03.927Z"
   }
 ]
