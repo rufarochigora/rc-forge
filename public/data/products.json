@@ -5443,5 +5443,33 @@
     "legacyId": 351,
     "createdAt": "2026-08-15T14:54:31.167Z",
     "updatedAt": "2026-08-15T14:54:31.167Z"
+  },
+  {
+    "id": "TEST-001",
+    "sku": "TEST-001",
+    "name": "Test Product",
+    "price": 1,
+    "currency": "USD",
+    "stock": 0,
+    "category": "Test",
+    "description": "Testing photo upload",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/TEST-001.jpg",
+    "available": false,
+    "createdAt": "2026-08-15T17:09:03.927Z",
+    "updatedAt": "2026-08-15T17:09:03.927Z"
+  },
+  {
+    "id": "ARDUINO-001",
+    "sku": "ARDUINO-001",
+    "name": "Arduino DevKit V1",
+    "price": 42,
+    "currency": "USD",
+    "stock": 15,
+    "category": "Microcontrollers",
+    "description": "Arduino starter kit",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/ARDUINO-001.jpg",
+    "available": true,
+    "createdAt": "2026-08-15T21:30:53.229Z",
+    "updatedAt": "2026-08-15T21:30:53.229Z"
   }
 ]
