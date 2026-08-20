@@ -63,8 +63,9 @@ export default function SharedFooter() {
                     </div>
                 </div>
 
-                {/* Legal Links + Track Order — single block (duplicate removed) */}
-                <div style={{ marginTop: '8px', display: 'flex', gap: '16px' }}>
+                {/* Legal Links + Track Order + App Download — single block */}
+                <div style={{ marginTop: '8px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                    <a href="/app" style={{ color: '#00c4fc', fontSize: '12px', textDecoration: 'none', fontWeight: '600' }}>📱 Download App</a>
                     <a href="/track" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Track Order</a>
                     <a href="/privacy" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Privacy Policy</a>
                     <a href="/terms" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Terms of Service</a>
