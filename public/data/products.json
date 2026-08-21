@@ -5471,5 +5471,19 @@
     "available": true,
     "createdAt": "2026-08-15T21:30:53.229Z",
     "updatedAt": "2026-08-15T21:30:53.229Z"
+  },
+  {
+    "id": "EPOXY25",
+    "sku": "EPOXY25",
+    "name": "Epoxy Floor Paint",
+    "price": 78,
+    "currency": "USD",
+    "stock": 1500,
+    "category": "Construction Materials/Furnishing",
+    "description": "Epoxy Floor Paint set. 28kg with 25kg Epoxy +3kg Primer",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/EPOXY25.jpg",
+    "available": true,
+    "createdAt": "2026-08-21T10:02:17.857Z",
+    "updatedAt": "2026-08-21T10:02:17.857Z"
   }
 ]
