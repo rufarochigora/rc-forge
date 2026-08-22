@@ -5513,5 +5513,19 @@
     "available": true,
     "createdAt": "2026-08-22T06:44:20.600Z",
     "updatedAt": "2026-08-22T06:44:20.600Z"
+  },
+  {
+    "id": "IPHONE",
+    "sku": "IPHONE",
+    "name": "iPhone Price List(Boxed)",
+    "price": 269,
+    "currency": "USD",
+    "stock": 1500,
+    "category": "iPhones/gadgets",
+    "description": "iPhone Price List. Shipping and Duty is Included 🤝",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/IPHONE.jpg",
+    "available": true,
+    "createdAt": "2026-08-22T06:57:17.973Z",
+    "updatedAt": "2026-08-22T06:57:17.973Z"
   }
 ]
