@@ -5485,5 +5485,19 @@
     "available": true,
     "createdAt": "2026-08-21T10:02:17.857Z",
     "updatedAt": "2026-08-21T10:02:17.857Z"
+  },
+  {
+    "id": "MASHA-MASCOT",
+    "sku": "MASHA-MASCOT",
+    "name": "Masha Bear Mascot",
+    "price": 97,
+    "currency": "USD",
+    "stock": 120,
+    "category": "Business/Entertainment/Hiring",
+    "description": "Masha Bear Mascots",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/MASHA-MASCOT.jpg",
+    "available": true,
+    "createdAt": "2026-08-22T06:02:05.804Z",
+    "updatedAt": "2026-08-22T06:02:05.804Z"
   }
 ]
