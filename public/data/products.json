@@ -5499,5 +5499,19 @@
     "available": true,
     "createdAt": "2026-08-22T06:02:05.804Z",
     "updatedAt": "2026-08-22T06:02:05.804Z"
+  },
+  {
+    "id": "POLAR-MASCOT",
+    "sku": "POLAR-MASCOT",
+    "name": "Polar Bear Mascot",
+    "price": 92,
+    "currency": "USD",
+    "stock": 120,
+    "category": "Business/Entertainment/Hiring",
+    "description": "Masha Bear Mascots",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/POLAR-MASCOT.jpg",
+    "available": true,
+    "createdAt": "2026-08-22T06:44:20.600Z",
+    "updatedAt": "2026-08-22T06:44:20.600Z"
   }
 ]
