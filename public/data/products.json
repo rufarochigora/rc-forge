@@ -5541,5 +5541,19 @@
     "available": true,
     "createdAt": "2026-08-22T07:00:41.776Z",
     "updatedAt": "2026-08-22T07:00:41.776Z"
+  },
+  {
+    "id": "FOOTBALL-JERSEY",
+    "sku": "FOOTBALL-JERSEY",
+    "name": "Football Jerseys",
+    "price": 18,
+    "currency": "USD",
+    "stock": 999,
+    "category": "Sports/Fashion",
+    "description": "26/27 Season Jerseys",
+    "image": "https://raw.githubusercontent.com/rufarochigora/rc-forge/main/public/assets/products/FOOTBALL-JERSEY.jpg",
+    "available": true,
+    "createdAt": "2026-08-22T07:27:33.609Z",
+    "updatedAt": "2026-08-22T07:27:33.609Z"
   }
 ]
