@@ -1,0 +1,178 @@
+/* src/styles/mobile-responsive.css
+ *
+ * Responsive layer for the existing RC Forge desktop design. Desktop
+ * (>= 900px) is untouched -- everything here only activates at narrower
+ * widths, per the "same platform, adapted" requirement: no separate
+ * mobile design, no new colors, same product cards/typography/spacing
+ * scale, just re-flowed for smaller viewports.
+ *
+ * Breakpoints:
+ *   >= 900px  desktop/laptop  (existing inline styles, unchanged)
+ *   601-899px tablet          (fewer grid columns, same header)
+ *   <= 600px  phone           (sticky compact header, bottom nav, 1-2 col grid)
+ */
+
+/* ── Bottom nav is hidden on desktop, shown on tablet/phone ── */
+.rc-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .rc-bottom-nav {
+    display: flex;
+  }
+
+  /* Keep content clear of the fixed bottom nav on any screen it appears on */
+  .rc-app-shell {
+    padding-bottom: calc(64px + var(--rc-safe-bottom, 0px)) !important;
+  }
+}
+
+/* ── Mobile compact header row (logo + quick-access icons) ──
+   Hidden on desktop; the full desktop header stays exactly as-is there. */
+.rc-mobile-header-row {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .rc-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    border-radius: var(--rc-radius-md, 10px) !important;
+    overflow: hidden;
+  }
+
+  .rc-header-brand-row {
+    display: none !important; /* the full desktop brand block collapses into the compact row below */
+  }
+
+  .rc-mobile-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--rc-navy-950, #060b16);
+  }
+
+  .rc-mobile-header-row img {
+    height: 30px;
+    width: auto;
+    border-radius: 4px;
+  }
+
+  .rc-mobile-header-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+    margin: 0;
+  }
+
+  .rc-mobile-icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: var(--rc-radius-sm, 8px);
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .rc-mobile-icon-btn .rc-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--rc-accent, #0984e3);
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+}
+
+/* ── Category bar: wraps on desktop, horizontally scrolls on mobile ── */
+@media (max-width: 899px) {
+  .rc-category-bar {
+    position: sticky;
+    top: 50px; /* sits right under the sticky compact header */
+    z-index: 39;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: var(--rc-surface, #fff);
+    padding: 10px 12px !important;
+    margin: 0 0 16px !important;
+    border-bottom: 1px solid var(--rc-border, #e3e8ee);
+  }
+  .rc-category-bar::-webkit-scrollbar { display: none; }
+  .rc-category-bar button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+/* ── Product grid: same cards, fewer columns as it narrows ── */
+@media (min-width: 600px) and (max-width: 899px) {
+  .rc-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 599px) {
+  .rc-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .rc-product-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* ── Main content area: single column on tablet/phone instead of the
+   desktop's grid-with-sidebar-cart layout ── */
+@media (max-width: 899px) {
+  .rc-main-layout {
+    flex-direction: column !important;
+  }
+  .rc-main-layout > * {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  /* Sticky cart sidebar only makes sense next to a tall grid on desktop;
+     on the single-column mobile layout it would stick awkwardly mid-scroll */
+  #rc-cart {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+/* ── Search input: let the flex child shrink so the search bar never pushes
+   the page wider than the screen on phones/tablets ── */
+@media (max-width: 899px) {
+  #rc-search-input {
+    min-width: 0;
+  }
+}

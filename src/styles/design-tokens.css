@@ -1,0 +1,99 @@
+/* src/styles/design-tokens.css
+ *
+ * RC Forge design system. Single source of truth for color, spacing,
+ * radius, shadow, and typography so the website and the Capacitor Android
+ * app render as one coherent product instead of two different styles.
+ *
+ * Palette: navy / amber engineering theme (matches the Smart Glove /
+ * ZETDC SMS "control room" visual language already used elsewhere in the
+ * RC Forge ecosystem — deep navy base, cyan/amber accents, clear
+ * safe/caution/danger states for stock and status).
+ */
+
+:root {
+  /* ── Brand ── */
+  --rc-navy-950: #060b16;
+  --rc-navy-900: #0b1220;
+  --rc-navy-800: #121b2e;
+  --rc-navy-700: #1c2740;
+  --rc-navy-600: #2a3752;
+  --rc-cyan-500: #00c4fc;
+  --rc-cyan-400: #44c4fc;
+  --rc-accent: #0984e3; /* matches the blue already used for prices/buttons across the existing desktop site */
+  --rc-amber-500: #ffb020;
+  --rc-amber-400: #ffc857;
+
+  /* ── Status (stock / order state) ── */
+  --rc-safe: #00b894;
+  --rc-safe-bg: rgba(0, 184, 148, 0.12);
+  --rc-caution: #e17055;
+  --rc-caution-bg: rgba(225, 112, 85, 0.12);
+  --rc-danger: #d63031;
+  --rc-danger-bg: rgba(214, 48, 49, 0.12);
+
+  /* ── Neutrals ── */
+  --rc-ink: #2d3436;
+  --rc-ink-soft: #636e72;
+  --rc-ink-faint: #b2bec3;
+  --rc-surface: #ffffff;
+  --rc-surface-alt: #f7f9fb;
+  --rc-border: #e3e8ee;
+
+  /* ── Spacing scale (4px base) ── */
+  --rc-space-1: 4px;
+  --rc-space-2: 8px;
+  --rc-space-3: 12px;
+  --rc-space-4: 16px;
+  --rc-space-5: 20px;
+  --rc-space-6: 24px;
+  --rc-space-8: 32px;
+  --rc-space-10: 40px;
+  --rc-space-12: 48px;
+
+  /* ── Radius ── */
+  --rc-radius-sm: 6px;
+  --rc-radius-md: 10px;
+  --rc-radius-lg: 16px;
+  --rc-radius-pill: 999px;
+
+  /* ── Shadow ── */
+  --rc-shadow-sm: 0 1px 2px rgba(6, 11, 22, 0.06);
+  --rc-shadow-md: 0 4px 6px rgba(6, 11, 22, 0.08);
+  --rc-shadow-lg: 0 10px 24px rgba(6, 11, 22, 0.12);
+
+  /* ── Typography ── */
+  --rc-font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --rc-font-mono: ui-monospace, 'SF Mono', Consolas, monospace;
+
+  /* ── Touch targets (Android-friendly minimums) ── */
+  --rc-touch-min: 44px;
+
+  /* ── Safe-area insets (falls back to 0 on web) ── */
+  --rc-safe-top: env(safe-area-inset-top, 0px);
+  --rc-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --rc-safe-left: env(safe-area-inset-left, 0px);
+  --rc-safe-right: env(safe-area-inset-right, 0px);
+
+  /* ── Motion ── */
+  --rc-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --rc-duration-fast: 120ms;
+  --rc-duration-base: 200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --rc-duration-fast: 0ms;
+    --rc-duration-base: 0ms;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Bottom-nav-aware content padding, applied by pages when the native
+   bottom nav is present (see BottomNav.jsx / useIsNative.js) */
+.rc-has-bottom-nav {
+  padding-bottom: calc(64px + var(--rc-safe-bottom));
+}

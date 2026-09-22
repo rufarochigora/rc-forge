@@ -1,0 +1,223 @@
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -1,4 +1,5 @@
+ import React, { useState, useMemo, useEffect } from 'react';
++import { useLocation, useSearchParams } from 'react-router-dom';
+ import SharedFooter from './SharedFooter';
+ import WebsiteAdBanner from './assets/WebsiteAdBanner';
+ import SocialBar from './assets/SocialBar';
+@@ -13,6 +14,8 @@
+ import { useIsNative } from './hooks/useIsNative';
+ import { useOnlineStatus } from './hooks/useOnlineStatus';
+ import { SearchIcon, CartIcon } from './components/icons';
++import { MenuIcon } from './components/nav/navIcons';
++import { useSidebar } from './components/nav/sidebarContext';
+ 
+ const PRODUCTS_CACHE_KEY = 'rc-forge-products-cache-v1';
+ // Inside the Android app, the UI itself is bundled locally for speed and
+@@ -406,7 +409,19 @@
+ 
+   // ── Search state ──
+   const [searchTerm, setSearchTerm] = useState('');
+-  const [selectedCategory, setSelectedCategory] = useState('All');
++  // The sidebar's Robotics & Electronics shortcuts link here as /?category=...
++  // Keyed on the navigation itself (not just the value) so choosing the same
++  // shortcut twice still re-applies it after the in-page chips were used.
++  const location = useLocation();
++  const [searchParams] = useSearchParams();
++  const categoryParam = searchParams.get('category');
++  const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'All');
++  const [lastLocationKey, setLastLocationKey] = useState(location.key);
++  if (location.key !== lastLocationKey) {
++    setLastLocationKey(location.key);
++    setSelectedCategory(categoryParam || 'All');
++  }
++  const { openMobile } = useSidebar();
+ 
+   // ── Mobile bottom-nav active tab (native app only) ──
+   const [activeSection, setActiveSection] = useState('rc-top');
+@@ -503,11 +518,23 @@
+     return ['All', ...Array.from(set).sort()];
+   }, [products]);
+ 
++  // A category from the URL that isn't in the catalog (renamed, mistyped)
++  // falls back to "All" instead of showing an empty shop.
++  const activeCategory =
++    selectedCategory === 'All' || productsLoading || categories.includes(selectedCategory)
++      ? selectedCategory
++      : 'All';
++
++  // Bring the catalog into view when arriving via a sidebar category link.
++  useEffect(() => {
++    if (categoryParam) scrollToSection({ id: 'rc-catalog' });
++  }, [categoryParam, location.key]);
++
+   // ── Filtered products (search + category) ──
+   const filteredProducts = useMemo(() => {
+     let list = products;
+-    if (selectedCategory !== 'All') {
+-      list = list.filter((p) => p.category === selectedCategory);
++    if (activeCategory !== 'All') {
++      list = list.filter((p) => p.category === activeCategory);
+     }
+     if (searchTerm.trim()) {
+       const lower = searchTerm.toLowerCase();
+@@ -519,7 +546,7 @@
+       );
+     }
+     return list;
+-  }, [products, searchTerm, selectedCategory]);
++  }, [products, searchTerm, activeCategory]);
+ 
+   const addToCart = (product) => {
+     if (product.stock !== null && product.stock <= 0) return; // out of stock, guard against stray calls
+@@ -671,6 +698,14 @@
+       }}>
+         <div className="rc-mobile-header-row">
+           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
++            <button
++              className="rc-mobile-icon-btn"
++              aria-label="Open menu"
++              aria-haspopup="dialog"
++              onClick={openMobile}
++            >
++              <MenuIcon />
++            </button>
+             <img src="RCForgelogo.png" alt="RC Forge Logo"
+               onError={(e) => { e.target.style.display = 'none'; }} />
+             <p className="rc-mobile-header-title">RC FORGE</p>
+@@ -733,9 +768,9 @@
+               style={{
+                 padding: '6px 14px',
+                 borderRadius: '20px',
+-                border: selectedCategory === cat ? '1.5px solid #0984e3' : '1.5px solid #dfe6e9',
+-                background: selectedCategory === cat ? '#0984e3' : '#fff',
+-                color: selectedCategory === cat ? '#fff' : '#2d3436',
++                border: activeCategory === cat ? '1.5px solid #0984e3' : '1.5px solid #dfe6e9',
++                background: activeCategory === cat ? '#0984e3' : '#fff',
++                color: activeCategory === cat ? '#fff' : '#2d3436',
+                 fontWeight: 600,
+                 fontSize: '0.8rem',
+                 cursor: 'pointer',
+--- a/src/SharedFooter.jsx
++++ b/src/SharedFooter.jsx
+@@ -67,6 +67,7 @@
+                 <div style={{ marginTop: '8px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                     <a href="/app" style={{ color: '#00c4fc', fontSize: '12px', textDecoration: 'none', fontWeight: '600' }}>📱 Download App</a>
+                     <a href="/track" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Track Order</a>
++                    <a href="/solar-elecrical-tubing" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Solar &amp; Electrical Tubing</a>
+                     <a href="/privacy" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Privacy Policy</a>
+                     <a href="/terms" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Terms of Service</a>
+                 </div>
+--- a/src/main.jsx
++++ b/src/main.jsx
+@@ -1,23 +1,36 @@
+ import { StrictMode } from 'react'
+ import { createRoot } from 'react-dom/client'
+-import { BrowserRouter, Routes, Route } from 'react-router-dom'
++import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+ import './index.css'
+ import App from './App.jsx'
+ import PrivacyPolicy from './PrivacyPolicy.jsx'
+ import TermsOfService from './TermsOfService.jsx'
+ import OrderTracker from './OrderTracker.jsx'
+ import AppDownload from './AppDownload.jsx'
++import SiteLayout from './components/nav/SiteLayout.jsx'
++import SolarElectricalTubing from './SolarElectricalTubing.jsx'
++import PowerInfrastructure from './PowerInfrastructure.jsx'
++import PowerCategoryPage from './PowerCategoryPage.jsx'
++import NotFound from './NotFound.jsx'
+ 
+ createRoot(document.getElementById('root')).render(
+   <StrictMode>
+     <BrowserRouter>
+-      <Routes>
+-        <Route path="/" element={<App />} />
+-        <Route path="/privacy" element={<PrivacyPolicy />} />
+-        <Route path="/terms" element={<TermsOfService />} />
+-        <Route path="/track" element={<OrderTracker />} />
+-        <Route path="/app" element={<AppDownload />} />
+-      </Routes>
++      <SiteLayout>
++        <Routes>
++          <Route path="/" element={<App />} />
++          <Route path="/privacy" element={<PrivacyPolicy />} />
++          <Route path="/terms" element={<TermsOfService />} />
++          <Route path="/track" element={<OrderTracker />} />
++          <Route path="/app" element={<AppDownload />} />
++          {/* Power & Infrastructure. The tubing page keeps its original address. */}
++          <Route path="/solar-elecrical-tubing" element={<SolarElectricalTubing />} />
++          <Route path="/solar-electrical-tubing" element={<Navigate to="/solar-elecrical-tubing" replace />} />
++          <Route path="/power-infrastructure" element={<PowerInfrastructure />} />
++          <Route path="/power-infrastructure/:slug" element={<PowerCategoryPage />} />
++          <Route path="*" element={<NotFound />} />
++        </Routes>
++      </SiteLayout>
+     </BrowserRouter>
+   </StrictMode>,
+ )
+\ No newline at end of file
+--- a/src/styles/mobile-responsive.css
++++ b/src/styles/mobile-responsive.css
+@@ -134,20 +134,20 @@
+ /* ── Product grid: same cards, fewer columns as it narrows ── */
+ @media (min-width: 600px) and (max-width: 899px) {
+   .rc-product-grid {
+-    grid-template-columns: repeat(3, 1fr) !important;
++    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+   }
+ }
+ 
+ @media (max-width: 599px) {
+   .rc-product-grid {
+-    grid-template-columns: repeat(2, 1fr) !important;
++    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+     gap: 12px !important;
+   }
+ }
+ 
+ @media (max-width: 380px) {
+   .rc-product-grid {
+-    grid-template-columns: 1fr !important;
++    grid-template-columns: minmax(0, 1fr) !important;
+   }
+ }
+ 
+@@ -159,6 +159,7 @@
+   }
+   .rc-main-layout > * {
+     width: 100% !important;
++    box-sizing: border-box;
+   }
+   /* Sticky cart sidebar only makes sense next to a tall grid on desktop;
+      on the single-column mobile layout it would stick awkwardly mid-scroll */
+@@ -167,3 +168,11 @@
+     top: auto !important;
+   }
+ }
++
++/* ── Search input: let the flex child shrink so the search bar never pushes
++   the page wider than the screen on phones/tablets ── */
++@media (max-width: 899px) {
++  #rc-search-input {
++    min-width: 0;
++  }
++}
+--- a/public/sitemap.xml
++++ b/public/sitemap.xml
+@@ -5,4 +5,14 @@
+     <lastmod>2026-04-01</lastmod>
+     <priority>1.0</priority>
+   </url>
++  <url>
++    <loc>https://rc-forge.vercel.app/solar-elecrical-tubing</loc>
++    <lastmod>2026-09-21</lastmod>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://rc-forge.vercel.app/power-infrastructure</loc>
++    <lastmod>2026-09-21</lastmod>
++    <priority>0.7</priority>
++  </url>
+ </urlset>
+\ No newline at end of file

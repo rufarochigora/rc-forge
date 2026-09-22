@@ -67,6 +67,7 @@ export default function SharedFooter() {
                 <div style={{ marginTop: '8px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                     <a href="/app" style={{ color: '#00c4fc', fontSize: '12px', textDecoration: 'none', fontWeight: '600' }}>📱 Download App</a>
                     <a href="/track" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Track Order</a>
+                    <a href="/solar-elecrical-tubing" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Solar &amp; Electrical Tubing</a>
                     <a href="/privacy" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Privacy Policy</a>
                     <a href="/terms" style={{ color: '#aaa', fontSize: '12px', textDecoration: 'none' }}>Terms of Service</a>
                 </div>

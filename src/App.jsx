@@ -1,8 +1,31 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import SharedFooter from './SharedFooter';
 import WebsiteAdBanner from './assets/WebsiteAdBanner';
 import SocialBar from './assets/SocialBar';
 import AboutSection from './assets/AboutSection';
+import './styles/design-tokens.css';
+import './styles/mobile-responsive.css';
+import ProductCard from './components/ProductCard';
+import { CatalogSkeletonGrid, CatalogEmptyState, CatalogErrorState } from './components/CatalogStates';
+import OfflineBanner from './components/OfflineBanner';
+import BottomNav from './components/BottomNav';
+import { scrollToSection } from './utils/navigation';
+import { useIsNative } from './hooks/useIsNative';
+import { useOnlineStatus } from './hooks/useOnlineStatus';
+import { SearchIcon, CartIcon } from './components/icons';
+import { MenuIcon } from './components/nav/navIcons';
+import { useSidebar } from './components/nav/sidebarContext';
+
+const PRODUCTS_CACHE_KEY = 'rc-forge-products-cache-v1';
+// Inside the Android app, the UI itself is bundled locally for speed and
+// offline resilience (see capacitor.config.ts), but that means a bare
+// relative fetch('/data/products.json') would resolve against the copy
+// baked in at the last app build -- stale as soon as the Telegram bot adds
+// a product. Fetching from the live Vercel deployment instead means the
+// catalog updates on-device immediately, with no app-store update needed.
+// On web, this is simply the site's own origin, so behavior is unchanged.
+const PRODUCTS_LIVE_ORIGIN = 'https://rc-forge.vercel.app';
 
 // Product catalog now lives in public/data/products.json, managed via the
 // Telegram catalog bot (see api/telegram-webhook.js). It's fetched at
@@ -104,6 +127,7 @@ function SearchBar({ searchTerm, setSearchTerm, resultCount, totalCount }) {
           </div>
 
           < input
+            id="rc-search-input"
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -385,45 +409,108 @@ function App() {
 
   // ── Search state ──
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  // The sidebar's Robotics & Electronics shortcuts link here as /?category=...
+  // Keyed on the navigation itself (not just the value) so choosing the same
+  // shortcut twice still re-applies it after the in-page chips were used.
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'All');
+  const [lastLocationKey, setLastLocationKey] = useState(location.key);
+  if (location.key !== lastLocationKey) {
+    setLastLocationKey(location.key);
+    setSelectedCategory(categoryParam || 'All');
+  }
+  const { openMobile } = useSidebar();
+
+  // ── Mobile bottom-nav active tab (native app only) ──
+  const [activeSection, setActiveSection] = useState('rc-top');
 
   // ── Product catalog (loaded dynamically from /data/products.json,
   //    which the Telegram catalog bot keeps up to date via GitHub) ──
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState(null);
+  const [productsErrorDetail, setProductsErrorDetail] = useState(null);
+  const [usingCachedProducts, setUsingCachedProducts] = useState(false);
+  const isOnline = useOnlineStatus();
+
+  function normalizeProducts(data) {
+    return data.map((p) => ({
+      ...p,
+      // keep both new-schema and legacy field names so the rest of
+      // the UI (product cards etc.) doesn't need to care which it gets
+      img: p.image || p.img || '',
+      details: p.description || p.details || '',
+      stock: typeof p.stock === 'number' ? p.stock : null,
+      available: p.available !== undefined ? p.available : true,
+    }));
+  }
+
+  const { isNative } = useIsNative();
+
+  const loadProducts = React.useCallback(async () => {
+    setProductsLoading(true);
+    setProductsError(null);
+    setProductsErrorDetail(null);
+    const base = isNative ? PRODUCTS_LIVE_ORIGIN : '';
+    const url = `${base}/data/products.json?t=${Date.now()}`;
+    try {
+      // cache-bust so a fresh Telegram-driven update is picked up
+      // immediately rather than served from an old cached copy
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to load catalog (${res.status})`);
+      const data = await res.json();
+      const normalized = normalizeProducts(data);
+      setProducts(normalized);
+      setUsingCachedProducts(false);
+      try {
+        localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(data));
+      } catch { /* storage full or unavailable — non-fatal */ }
+    } catch (err) {
+      // Capture enough detail to actually diagnose this on-device, since
+      // a generic "Failed to fetch" from the browser's fetch() API hides
+      // the real cause (CORS, DNS, TLS, offline, etc.) behind one vague
+      // TypeError message.
+      setProductsErrorDetail({
+        url,
+        name: err && err.name,
+        message: (err && err.message) || String(err),
+        online: typeof navigator !== 'undefined' ? navigator.onLine : 'unknown',
+        time: new Date().toISOString(),
+      });
+
+      // Network failed (likely offline) -- fall back to the last catalog
+      // we successfully fetched, rather than showing a blank/broken page.
+      let cached = null;
+      try {
+        const raw = localStorage.getItem(PRODUCTS_CACHE_KEY);
+        cached = raw ? JSON.parse(raw) : null;
+      } catch { /* ignore parse errors */ }
+
+      if (cached && cached.length) {
+        setProducts(normalizeProducts(cached));
+        setUsingCachedProducts(true);
+        setProductsError(err.message || 'Could not refresh the catalog.');
+      } else {
+        setProductsError(err.message || 'Could not load the catalog.');
+      }
+    } finally {
+      setProductsLoading(false);
+    }
+  }, [isNative]);
 
   useEffect(() => {
-    let cancelled = false;
-    async function loadProducts() {
-      setProductsLoading(true);
-      setProductsError(null);
-      try {
-        // cache-bust so a fresh Telegram-driven update is picked up
-        // immediately rather than served from an old cached copy
-        const res = await fetch(`/data/products.json?t=${Date.now()}`);
-        if (!res.ok) throw new Error(`Failed to load catalog (${res.status})`);
-        const data = await res.json();
-        if (cancelled) return;
-        const normalized = data.map((p) => ({
-          ...p,
-          // keep both new-schema and legacy field names so the rest of
-          // the UI (product cards etc.) doesn't need to care which it gets
-          img: p.image || p.img || '',
-          details: p.description || p.details || '',
-          stock: typeof p.stock === 'number' ? p.stock : null,
-          available: p.available !== undefined ? p.available : true,
-        }));
-        setProducts(normalized);
-      } catch (err) {
-        if (!cancelled) setProductsError(err.message || 'Could not load the catalog.');
-      } finally {
-        if (!cancelled) setProductsLoading(false);
-      }
-    }
     loadProducts();
-    return () => { cancelled = true; };
-  }, []);
+  }, [loadProducts]);
+
+  // Auto-retry once connectivity comes back, if the last attempt failed.
+  useEffect(() => {
+    if (isOnline && productsError) {
+      loadProducts();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOnline]);
 
   // ── Categories derived from the live catalog ──
   const categories = useMemo(() => {
@@ -431,11 +518,23 @@ function App() {
     return ['All', ...Array.from(set).sort()];
   }, [products]);
 
+  // A category from the URL that isn't in the catalog (renamed, mistyped)
+  // falls back to "All" instead of showing an empty shop.
+  const activeCategory =
+    selectedCategory === 'All' || productsLoading || categories.includes(selectedCategory)
+      ? selectedCategory
+      : 'All';
+
+  // Bring the catalog into view when arriving via a sidebar category link.
+  useEffect(() => {
+    if (categoryParam) scrollToSection({ id: 'rc-catalog' });
+  }, [categoryParam, location.key]);
+
   // ── Filtered products (search + category) ──
   const filteredProducts = useMemo(() => {
     let list = products;
-    if (selectedCategory !== 'All') {
-      list = list.filter((p) => p.category === selectedCategory);
+    if (activeCategory !== 'All') {
+      list = list.filter((p) => p.category === activeCategory);
     }
     if (searchTerm.trim()) {
       const lower = searchTerm.toLowerCase();
@@ -447,7 +546,7 @@ function App() {
       );
     }
     return list;
-  }, [products, searchTerm, selectedCategory]);
+  }, [products, searchTerm, activeCategory]);
 
   const addToCart = (product) => {
     if (product.stock !== null && product.stock <= 0) return; // out of stock, guard against stray calls
@@ -582,21 +681,64 @@ function App() {
   };
 
   return (
-    <div style={{ fontFamily: '"Inter", sans-serif', background: '#f5f6fa', minHeight: '100vh', padding: '20px' }}>
+    <div
+      className="rc-app-shell"
+      style={{ fontFamily: '"Inter", sans-serif', background: '#f5f6fa', minHeight: '100vh', padding: '20px' }}
+    >
+      <OfflineBanner />
       <SocialBar />
 
-      {/* Header */}
-      <header style={{
+      {/* Header — desktop keeps its current look untouched; the mobile
+          compact row below only shows under 900px (see mobile-responsive.css) */}
+      <header id="rc-top" className="rc-header" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         gap: '20px', marginBottom: '40px', padding: '20px',
-        background: '#4d9db3', color: '#fff', borderRadius: '10px'
+        background: '#4d9db3', color: '#fff', borderRadius: '10px',
+        scrollMarginTop: '20px',
       }}>
-        <img src="RCForgelogo.png" alt="RC Forge Logo"
-          style={{ height: '60px', width: 'auto', borderRadius: '5px' }}
-          onError={(e) => { e.target.style.display = 'none'; }} />
-        <div style={{ textAlign: 'left' }}>
-          <h1 style={{ margin: 0, letterSpacing: '2px' }}>RC FORGE</h1>
-          <p style={{ margin: '5px 0 0', color: '#00cec9' }}>Precision Electronic Components</p>
+        <div className="rc-mobile-header-row">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              className="rc-mobile-icon-btn"
+              aria-label="Open menu"
+              aria-haspopup="dialog"
+              onClick={openMobile}
+            >
+              <MenuIcon />
+            </button>
+            <img src="RCForgelogo.png" alt="RC Forge Logo"
+              onError={(e) => { e.target.style.display = 'none'; }} />
+            <p className="rc-mobile-header-title">RC FORGE</p>
+          </div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              className="rc-mobile-icon-btn"
+              aria-label="Search"
+              onClick={() => scrollToSection({ id: 'rc-search', focusInputId: 'rc-search-input' })}
+            >
+              <SearchIcon />
+            </button>
+            <button
+              className="rc-mobile-icon-btn"
+              aria-label="View cart"
+              onClick={() => scrollToSection({ id: 'rc-cart' })}
+            >
+              <CartIcon />
+              {cart.length > 0 && (
+                <span className="rc-badge">{cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}</span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="rc-header-brand-row" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <img src="RCForgelogo.png" alt="RC Forge Logo"
+            style={{ height: '60px', width: 'auto', borderRadius: '5px' }}
+            onError={(e) => { e.target.style.display = 'none'; }} />
+          <div style={{ textAlign: 'left' }}>
+            <h1 style={{ margin: 0, letterSpacing: '2px' }}>RC FORGE</h1>
+            <p style={{ margin: '5px 0 0', color: '#00cec9' }}>Precision Electronic Components</p>
+          </div>
         </div>
       </header>
 
@@ -604,16 +746,18 @@ function App() {
       <AboutSection />
 
       {/* ── SEARCH BAR ── */}
-      <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        resultCount={filteredProducts.length}
-        totalCount={products.length}
-      />
+      <div id="rc-search" style={{ scrollMarginTop: '70px' }}>
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          resultCount={filteredProducts.length}
+          totalCount={products.length}
+        />
+      </div>
 
       {/* ── CATEGORY FILTER ── */}
       {categories.length > 1 && (
-        <div style={{
+        <div className="rc-category-bar" style={{
           maxWidth: '1400px', margin: '0 auto 20px', padding: '0 4px',
           display: 'flex', gap: '8px', flexWrap: 'wrap'
         }}>
@@ -624,9 +768,9 @@ function App() {
               style={{
                 padding: '6px 14px',
                 borderRadius: '20px',
-                border: selectedCategory === cat ? '1.5px solid #0984e3' : '1.5px solid #dfe6e9',
-                background: selectedCategory === cat ? '#0984e3' : '#fff',
-                color: selectedCategory === cat ? '#fff' : '#2d3436',
+                border: activeCategory === cat ? '1.5px solid #0984e3' : '1.5px solid #dfe6e9',
+                background: activeCategory === cat ? '#0984e3' : '#fff',
+                color: activeCategory === cat ? '#fff' : '#2d3436',
                 fontWeight: 600,
                 fontSize: '0.8rem',
                 cursor: 'pointer',
@@ -642,121 +786,50 @@ function App() {
       {/* ── CUSTOM COMPONENT REQUEST ── */}
       <CustomComponentRequest onAddCustomToCart={addCustomComponentsToCart} />
 
-      <main style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '20px', flexDirection: 'row', flexWrap: 'wrap' }}>
+      <main className="rc-main-layout" style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '20px', flexDirection: 'row', flexWrap: 'wrap' }}>
 
         {/* Products Grid */}
-        <div style={{ flex: 3, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px' }}>
+        <div id="rc-catalog" className="rc-product-grid" style={{ flex: 3, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px', scrollMarginTop: '70px', alignContent: 'start' }}>
           {productsLoading ? (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', color: '#636e72' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>⏳</div>
-              <p>Loading catalog…</p>
-            </div>
-          ) : productsError ? (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', color: '#d63031' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>⚠️</div>
-              <p>{productsError}</p>
-            </div>
+            <CatalogSkeletonGrid />
+          ) : productsError && products.length === 0 ? (
+            <CatalogErrorState message={productsError} onRetry={loadProducts} isCached={usingCachedProducts} detail={productsErrorDetail} />
           ) : filteredProducts.length === 0 ? (
-            <div style={{
-              gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px',
-              color: '#636e72'
-            }}>
-              <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🔍</div>
-              <h3 style={{ margin: '0 0 8px', color: '#2d3436' }}>No components found</h3>
-              <p style={{ margin: 0 }}>
-                No results for <strong>"{searchTerm}"</strong>. Try a different keyword, browse a category,
-                or use the "Can't Find Your Component?" section above to request it directly.
-              </p>
-              <button
-                onClick={() => { setSearchTerm(''); setSelectedCategory('All'); }}
-                style={{
-                  marginTop: '18px', padding: '10px 24px', background: '#0984e3',
-                  color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer',
-                  fontWeight: '600', fontSize: '0.9rem'
-                }}
-              >
-                Clear Filters
-              </button>
-            </div>
+            <CatalogEmptyState
+              searchTerm={searchTerm}
+              onClear={() => { setSearchTerm(''); setSelectedCategory('All'); }}
+            />
           ) : (
-            filteredProducts.map((product, index) => {
-              const isTrackedStock = product.stock !== null && product.stock !== undefined;
-              const outOfStock = isTrackedStock && product.stock <= 0;
-              const lowStock = isTrackedStock && product.stock > 0 && product.stock <= 5;
-              return (
-              <div key={product.sku || index} style={{
-                background: '#fff', borderRadius: '10px', padding: '15px',
-                textAlign: 'center', boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-                display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                opacity: outOfStock ? 0.7 : 1
-              }}>
-                <div>
-                  <div style={{ display: 'flex', gap: '6px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
-                    <span style={{
-                      fontSize: '0.7rem', textTransform: 'uppercase', color: '#636e72',
-                      background: '#44c4fc', padding: '3px 8px', borderRadius: '12px',
-                      display: 'inline-block'
-                    }}>
-                      {product.category}
-                    </span>
-                    {isTrackedStock && (
-                      <span style={{
-                        fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', borderRadius: '12px',
-                        display: 'inline-block',
-                        color: outOfStock ? '#d63031' : lowStock ? '#e17055' : '#00b894',
-                        background: outOfStock ? 'rgba(214,48,49,0.12)' : lowStock ? 'rgba(225,112,85,0.12)' : 'rgba(0,184,148,0.12)'
-                      }}>
-                        {outOfStock ? 'Out of Stock' : lowStock ? `Low Stock (${product.stock})` : `In Stock (${product.stock})`}
-                      </span>
-                    )}
-                  </div>
-                  <div style={{
-                    height: '150px', display: 'flex', alignItems: 'center',
-                    justifyContent: 'center', background: 'hsl(189, 92%, 47%)',
-                    borderRadius: '8px', overflow: 'hidden'
-                  }}>
-                    <img src={product.img} alt={product.name}
-                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                      onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.innerText = '📦 Image Ready'; }} />
-                  </div>
-                  <h3 style={{ fontSize: '1rem', margin: '15px 0 5px', color: '#2d3436' }}>{product.name}</h3>
-                  {product.details && (
-                    <p style={{ fontSize: '0.8rem', color: '#b2bec3', margin: '0 0 10px', minHeight: '35px' }}>{product.details}</p>
-                  )}
-                </div>
-                <div>
-                  <p style={{ fontWeight: 'bold', color: '#0984e3', margin: '10px 0 15px', fontSize: '1.2rem' }}>
-                    {product.price === 0.00 ? (
-                      <span style={{ fontSize: '0.85rem', color: '#636e72', fontWeight: '600' }}>Enquire for price</span>
-                    ) : `$${product.price.toFixed(2)}`}
-                  </p>
-                  <button
-                    onClick={() => addToCart(product)}
-                    disabled={outOfStock}
-                    style={{
-                      width: '100%', padding: '10px',
-                      background: outOfStock ? '#b2bec3' : '#2d3436',
-                      color: '#fff', border: 'none', borderRadius: '5px',
-                      cursor: outOfStock ? 'not-allowed' : 'pointer',
-                      fontWeight: 'bold', transition: 'background 0.2s'
-                    }}
-                    onMouseOver={(e) => { if (!outOfStock) e.target.style.background = '#0984e3'; }}
-                    onMouseOut={(e) => { if (!outOfStock) e.target.style.background = '#2d3436'; }}
-                  >
-                    {outOfStock ? 'Out of Stock' : 'Add to Order'}
+            <>
+              {productsError && (
+                <div style={{
+                  gridColumn: '1 / -1', background: 'var(--rc-caution-bg)', color: 'var(--rc-caution)',
+                  padding: '10px 14px', borderRadius: 'var(--rc-radius-sm)', fontSize: '0.85rem', fontWeight: 600,
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px'
+                }}>
+                  <span>
+                    {usingCachedProducts
+                      ? `Showing the last saved copy of the catalog — ${productsError}`
+                      : `Couldn't refresh the catalog — ${productsError}`}
+                  </span>
+                  <button onClick={loadProducts} style={{ background: 'none', border: '1px solid currentColor', borderRadius: '5px', padding: '4px 10px', cursor: 'pointer', color: 'inherit', fontWeight: 700 }}>
+                    Retry
                   </button>
                 </div>
-              </div>
-              );
-            })
+              )}
+              {filteredProducts.map((product, index) => (
+                <ProductCard key={product.sku || index} product={product} onAddToCart={addToCart} />
+              ))}
+            </>
           )}
         </div>
 
         {/* Sidebar Cart */}
-        <div style={{
+        <div id="rc-cart" style={{
           flex: 1, minWidth: '320px', background: '#f7f8fa', padding: '20px',
           borderRadius: '10px', height: 'fit-content',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.05)', position: 'sticky', top: '20px'
+          boxShadow: '0 4px 6px rgba(0,0,0,0.05)', position: 'sticky', top: '20px',
+          scrollMarginTop: '70px',
         }}>
           <h2 style={{ marginTop: 0, borderBottom: '2px solid #e0e5f8', paddingBottom: '10px' }}>Your Order</h2>
           {cart.length === 0 ? (
@@ -927,6 +1000,12 @@ function App() {
       )}
 
       <SharedFooter />
+
+      <BottomNav
+        cartCount={cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}
+        activeId={activeSection}
+        onNavigate={(tab) => setActiveSection(tab.id)}
+      />
     </div>
   );
 }
